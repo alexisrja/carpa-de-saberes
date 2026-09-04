@@ -1,0 +1,2430 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Escuela de pista para los ninos del circo: seis materias con lecciones y ejercicios.">
+<title>Carpa de Saberes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Nunito:ital,wght@0,400;0,700;0,900;1,400&family=Rye&display=swap">
+<style>
+/* Carpa de Saberes — estilos compartidos
+   Los contrastes de este sistema de tokens están medidos: ningún par
+   texto/fondo baja de 4.5:1 en tema claro ni en oscuro. Antes de cambiar
+   un color, vuelve a medirlo. */
+
+:root{
+  --arena:#FBF3E2;
+  --arena2:#F2E3C4;
+  --panel:#FFFCF3;
+  --tinta:#2A1B3D;
+  --tinta2:#6B5A7C;
+  --rojo:#C62828;
+  --rojo2:#8E1616;
+  --oro:#E8A317;
+  --turquesa:#0E757E;
+  --verde:#337A3D;
+  --linea:rgba(42,27,61,.16);
+  --sombra:0 3px 0 rgba(42,27,61,.22);
+  --foco:#0E757E;
+  --sobre:#FFF6E6;          /* texto que va ENCIMA de una superficie de color */
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --arena:#181031; --arena2:#221545; --panel:#241748;
+    --tinta:#F7EDDA; --tinta2:#B9A9C9;
+    --rojo:#FF6152; --rojo2:#C63B2E; --oro:#FFC44D;
+    --turquesa:#3FC3CC; --verde:#71D782;
+    --linea:rgba(247,237,218,.18);
+    --sombra:0 3px 0 rgba(0,0,0,.45);
+    --foco:#FFC44D;
+    --sobre:#181031;
+  }
+}
+:root[data-theme="dark"]{
+  --arena:#181031; --arena2:#221545; --panel:#241748;
+  --tinta:#F7EDDA; --tinta2:#B9A9C9;
+  --rojo:#FF6152; --rojo2:#C63B2E; --oro:#FFC44D;
+  --turquesa:#3FC3CC; --verde:#71D782;
+  --linea:rgba(247,237,218,.18);
+  --sombra:0 3px 0 rgba(0,0,0,.45);
+  --foco:#FFC44D;
+  --sobre:#181031;
+}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{
+  margin:0;
+  background:var(--arena);
+  color:var(--tinta);
+  font-family:"Nunito","Segoe UI",Verdana,sans-serif;
+  font-size:17px;
+  line-height:1.55;
+  -webkit-text-size-adjust:100%;
+}
+img{max-width:100%}
+:focus-visible{outline:3px solid var(--foco); outline-offset:3px; border-radius:6px}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:var(--turquesa)}
+h1,h2,h3{margin:0;text-wrap:balance;font-family:"Alfa Slab One","Rockwell",Georgia,serif;font-weight:400;line-height:1.15}
+
+.envoltura{max-width:1080px;margin:0 auto;padding:0 16px 72px}
+
+/* ---------- marquesina ---------- */
+.marquesina{
+  position:relative;
+  background:
+    repeating-linear-gradient(135deg, rgba(198,40,40,.13) 0 16px, transparent 16px 32px),
+    var(--arena2);
+  border-bottom:3px solid var(--rojo);
+  padding:22px 16px 18px;
+  text-align:center;
+  overflow:hidden;
+}
+.marca{
+  font-family:"Rye","Alfa Slab One",Georgia,serif;
+  font-size:clamp(28px,7vw,52px);
+  color:var(--rojo);
+  letter-spacing:.01em;
+  text-shadow:2px 3px 0 var(--oro);
+  margin:0;
+}
+.marca a{color:inherit;text-decoration:none}
+.lema{
+  margin:6px 0 0;font-size:13px;letter-spacing:.16em;
+  text-transform:uppercase;font-weight:900;color:var(--tinta2);
+}
+.barra-perfil{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;margin-top:14px}
+.chip{
+  display:inline-flex;align-items:center;gap:7px;
+  background:var(--panel);border:2px solid var(--tinta);border-radius:999px;
+  padding:5px 14px;font-weight:700;font-size:14px;box-shadow:var(--sombra);
+}
+.chip b{font-family:"Alfa Slab One",Georgia,serif;font-variant-numeric:tabular-nums}
+.chip--btn:hover{background:var(--arena2)}
+
+/* ---------- banderines ---------- */
+.banderines{display:flex;height:26px;overflow:hidden;margin:0}
+.banderines i{flex:1 0 auto;width:26px;clip-path:polygon(0 0,100% 0,50% 100%)}
+
+/* ---------- estructura ---------- */
+.seccion{margin-top:34px}
+.rotulo{font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:900;color:var(--tinta2);margin:0 0 6px}
+.titulo-seccion{font-size:clamp(22px,4.5vw,32px);margin-bottom:14px}
+.btn{
+  border:2px solid var(--tinta);border-radius:10px;padding:11px 20px;
+  font-weight:900;background:var(--panel);box-shadow:var(--sombra);
+  transition:transform .1s ease;
+}
+.btn:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(42,27,61,.22)}
+.btn--rojo{background:var(--rojo);color:var(--sobre);border-color:var(--rojo2)}
+.btn--oro{background:var(--oro);color:#2A1B3D;border-color:#A9741A}
+.acciones{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.volver{
+  background:none;border:none;padding:6px 0;font-weight:900;font-size:14px;
+  color:var(--turquesa);display:inline-flex;gap:6px;align-items:center;text-decoration:none;
+}
+.volver:hover{text-decoration:underline}
+
+/* =======================================================
+   INICIO — quién eres
+   ======================================================= */
+.artistas{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
+.artista{
+  background:var(--panel);border:2px solid var(--tinta);border-radius:14px;
+  padding:18px 14px 14px;box-shadow:var(--sombra);
+  display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;
+  transition:transform .12s ease;
+}
+.artista:hover{transform:translateY(-3px)}
+.artista .cara{
+  font-size:44px;line-height:1;width:74px;height:74px;border-radius:50%;
+  display:grid;place-items:center;background:var(--arena2);border:2px solid var(--linea);
+}
+.artista .nombre{font-family:"Alfa Slab One",Georgia,serif;font-size:19px;line-height:1.1;word-break:break-word}
+.artista .detalle{font-size:12px;font-weight:900;letter-spacing:.06em;color:var(--tinta2);text-transform:uppercase}
+.artista .marcador{display:flex;gap:10px;font-size:13px;font-weight:900;color:var(--tinta2)}
+.artista--nuevo{border-style:dashed;background:transparent;justify-content:center;min-height:180px}
+.artista--nuevo .cara{background:transparent;border-style:dashed;font-size:34px}
+
+.vacio{
+  border:2px dashed var(--linea);border-radius:14px;padding:26px 20px;
+  text-align:center;color:var(--tinta2);max-width:52ch;margin:0 auto;
+}
+
+/* alta de artista */
+.formulario{
+  background:var(--panel);border:2px solid var(--tinta);border-radius:14px;
+  padding:20px;box-shadow:var(--sombra);max-width:560px;
+}
+.campo{margin-bottom:18px}
+.campo input[type="text"]{
+  width:100%;font:inherit;font-weight:900;font-size:19px;padding:12px 14px;
+  border:2px solid var(--tinta);border-radius:10px;background:var(--arena);color:var(--tinta);
+}
+.caras{display:grid;grid-template-columns:repeat(auto-fill,minmax(60px,1fr));gap:8px}
+.cara-op{
+  aspect-ratio:1;font-size:30px;background:var(--arena);
+  border:2px solid var(--linea);border-radius:12px;display:grid;place-items:center;
+}
+.cara-op[aria-pressed="true"]{border-color:var(--rojo);background:var(--arena2);border-width:3px}
+.niveles-op{display:flex;flex-wrap:wrap;gap:10px}
+.nivel{
+  border:2px solid var(--tinta);background:var(--panel);border-radius:10px;padding:9px 15px;
+  display:flex;flex-direction:column;align-items:flex-start;box-shadow:var(--sombra);
+  transition:transform .12s ease;
+}
+.nivel:hover{transform:translateY(-2px)}
+.nivel strong{font-family:"Alfa Slab One",Georgia,serif;font-size:16px;line-height:1.1}
+.nivel span{font-size:12px;color:var(--tinta2);font-weight:700}
+.nivel[aria-pressed="true"]{background:var(--rojo);color:var(--sobre);border-color:var(--rojo2)}
+.nivel[aria-pressed="true"] span{color:var(--sobre);opacity:.85}
+
+/* =======================================================
+   ESTACIÓN — cursos y lecciones
+   ======================================================= */
+.liston{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 26px}
+.programa{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.cartel{
+  position:relative;text-align:left;background:var(--panel);
+  border:2px solid var(--tinta);border-radius:12px;padding:16px 16px 14px;
+  box-shadow:var(--sombra);display:flex;flex-direction:column;gap:8px;
+  transition:transform .12s ease, box-shadow .12s ease;
+}
+.cartel:hover{transform:translateY(-3px);box-shadow:0 7px 0 rgba(42,27,61,.2)}
+.cartel .num{font-family:"Alfa Slab One",Georgia,serif;font-size:13px;letter-spacing:.14em;color:var(--rojo)}
+.cartel .icono{font-size:34px;line-height:1}
+.cartel h3{font-size:21px}
+.cartel p{margin:0;font-size:14px;color:var(--tinta2)}
+.medidor{height:10px;border-radius:999px;background:var(--arena2);overflow:hidden;border:1px solid var(--linea)}
+.medidor i{display:block;height:100%;background:var(--oro)}
+.pie-cartel{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:900;color:var(--tinta2);letter-spacing:.04em}
+
+.vista[hidden]{display:none}
+.vista:focus{outline:none}
+.encabezado-curso{display:flex;gap:14px;align-items:center;margin:6px 0 4px}
+.encabezado-curso .icono{font-size:46px}
+
+.lista-lecciones{display:flex;flex-direction:column;gap:12px;margin-top:20px}
+.leccion-fila{
+  display:flex;gap:14px;align-items:center;text-align:left;background:var(--panel);
+  border:2px solid var(--tinta);border-radius:12px;padding:14px 16px;box-shadow:var(--sombra);
+}
+.leccion-fila:hover{background:var(--arena2)}
+.leccion-fila .orden{
+  flex:0 0 42px;height:42px;border-radius:50%;display:grid;place-items:center;
+  background:var(--turquesa);color:var(--sobre);
+  font-family:"Alfa Slab One",Georgia,serif;font-size:19px;
+}
+.leccion-fila .cuerpo{flex:1;min-width:0}
+.leccion-fila strong{display:block;font-size:17px}
+.leccion-fila small{color:var(--tinta2);font-weight:700}
+.estrellas{letter-spacing:2px;font-size:15px;flex:0 0 auto}
+
+.pizarra{background:var(--panel);border:2px solid var(--tinta);border-radius:14px;padding:20px;box-shadow:var(--sombra);margin-top:18px}
+.pizarra h2{font-size:clamp(20px,4vw,27px);margin-bottom:10px}
+.pizarra p{max-width:62ch}
+.pizarra ul{max-width:62ch;padding-left:20px;margin:10px 0}
+.pizarra li{margin:5px 0}
+.dato{border-left:5px solid var(--oro);background:var(--arena2);padding:10px 14px;border-radius:0 10px 10px 0;font-size:15px;margin:16px 0 0;max-width:62ch}
+.lectura{background:var(--arena2);border:2px dashed var(--linea);border-radius:12px;padding:16px 18px;margin-top:16px}
+.lectura h3{font-size:19px;margin-bottom:8px;color:var(--rojo)}
+.lectura p{max-width:60ch;font-size:16.5px}
+
+/* ---------- pista de ejercicios ---------- */
+.pista{
+  position:relative;margin-top:18px;
+  background:radial-gradient(ellipse 70% 55% at 50% 42%, var(--arena2) 0%, transparent 72%), var(--panel);
+  border:2px solid var(--tinta);border-radius:18px;padding:22px 18px 20px;
+  box-shadow:var(--sombra);overflow:hidden;
+}
+.pista::before{content:"";position:absolute;inset:10px;border:2px dashed var(--linea);border-radius:14px;pointer-events:none}
+.contador{display:flex;align-items:center;gap:10px;justify-content:space-between;font-size:12px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--tinta2);position:relative}
+.riel{height:8px;border-radius:999px;background:var(--arena2);margin:10px 0 18px;overflow:hidden;position:relative;border:1px solid var(--linea)}
+.riel i{display:block;height:100%;background:var(--turquesa);transition:width .3s ease}
+.pregunta{position:relative;font-size:clamp(19px,3.6vw,25px);font-family:"Alfa Slab One",Georgia,serif;line-height:1.25;margin:0 0 4px;max-width:30ch}
+.emojis{font-size:clamp(30px,9vw,54px);letter-spacing:6px;line-height:1.3;margin:10px 0 0;position:relative}
+
+.opciones{display:grid;gap:10px;margin-top:18px;position:relative}
+@media(min-width:620px){ .opciones.dos{grid-template-columns:1fr 1fr} }
+.op{
+  text-align:left;background:var(--panel);border:2px solid var(--tinta);border-radius:12px;
+  padding:14px 16px;font-weight:700;font-size:18px;box-shadow:var(--sombra);
+  display:flex;gap:12px;align-items:center;
+}
+.op:hover:not(:disabled){background:var(--arena2)}
+.op:disabled{cursor:default;opacity:.62}
+.op .marca-op{flex:0 0 30px;height:30px;border-radius:8px;display:grid;place-items:center;background:var(--arena2);font-family:"Alfa Slab One",Georgia,serif;font-size:14px}
+.op.bien{background:var(--verde);color:var(--sobre);border-color:var(--verde);opacity:1}
+.op.mal{background:var(--rojo);color:var(--sobre);border-color:var(--rojo2);opacity:1}
+.op.bien .marca-op,.op.mal .marca-op{background:transparent;box-shadow:inset 0 0 0 2px currentColor}
+
+.fila-respuesta{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;position:relative}
+.fila-respuesta input{
+  flex:1 1 160px;min-width:0;font:inherit;font-weight:900;font-size:20px;
+  padding:12px 14px;border-radius:10px;border:2px solid var(--tinta);
+  background:var(--panel);color:var(--tinta);font-variant-numeric:tabular-nums;
+}
+.veredicto{margin-top:16px;border-radius:12px;padding:13px 16px;border:2px solid var(--tinta);background:var(--arena2);font-size:15.5px;position:relative}
+.veredicto strong{font-family:"Alfa Slab One",Georgia,serif;display:block;margin-bottom:3px}
+.veredicto.ok{border-color:var(--verde)}
+.veredicto.no{border-color:var(--rojo)}
+
+/* =======================================================
+   EJERCICIOS INTERACTIVOS
+   ======================================================= */
+.taller{position:relative;margin-top:20px}
+.ayuda-taller{font-size:13px;font-weight:900;color:var(--tinta2);margin:0 0 10px;letter-spacing:.04em}
+
+/* fracciones: barra que se pinta tocando */
+.barra-frac{display:flex;border:3px solid var(--tinta);border-radius:12px;overflow:hidden;background:var(--panel)}
+.barra-frac .celda{
+  flex:1 1 0;min-width:0;aspect-ratio:1.25;border:none;border-right:2px solid var(--tinta);
+  background:var(--panel);transition:background .12s ease;
+}
+.barra-frac .celda:last-child{border-right:none}
+.barra-frac .celda[aria-pressed="true"]{background:var(--turquesa)}
+.barra-frac .celda:hover:not(:disabled){background:var(--arena2)}
+.barra-frac .celda[aria-pressed="true"]:hover:not(:disabled){background:var(--turquesa)}
+.barra-frac.bien{border-color:var(--verde)}
+.barra-frac.mal{border-color:var(--rojo)}
+.cuenta-frac{
+  text-align:center;margin-top:10px;font-family:"Alfa Slab One",Georgia,serif;
+  font-size:26px;font-variant-numeric:tabular-nums;
+}
+.cuenta-frac small{display:block;font-family:"Nunito",sans-serif;font-size:12px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--tinta2)}
+
+/* recta numérica */
+/* padding abajo: la etiqueta del número cuelga bajo la línea y se cortaba */
+.recta{position:relative;padding:30px 12px 40px;overflow-x:auto}
+.recta-linea{position:relative;height:4px;background:var(--tinta);border-radius:2px;min-width:260px}
+.recta-marca{
+  position:absolute;top:-16px;transform:translateX(-50%);
+  width:38px;padding:0;background:transparent;border:none;
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+}
+.recta-marca i{display:block;width:3px;height:18px;background:var(--tinta);border-radius:2px}
+.recta-marca span{font-size:12px;font-weight:900;font-variant-numeric:tabular-nums;color:var(--tinta2);white-space:nowrap}
+.recta-marca[aria-pressed="true"] i{background:var(--turquesa);width:6px;height:26px;margin-top:-8px}
+.recta-marca[aria-pressed="true"] span{color:var(--turquesa);font-size:14px}
+.recta-marca.bien i{background:var(--verde);width:6px;height:26px;margin-top:-8px}
+.recta-marca.mal i{background:var(--rojo);width:6px;height:26px;margin-top:-8px}
+
+/* ordenar */
+.orden-huecos{display:flex;flex-wrap:wrap;gap:8px;min-height:52px;padding:10px;border:2px dashed var(--linea);border-radius:12px;background:var(--arena2)}
+.orden-huecos:empty::after{content:"Aquí se van acomodando";color:var(--tinta2);font-size:13px;font-weight:900}
+.orden-banco{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.ficha{
+  background:var(--panel);border:2px solid var(--tinta);border-radius:10px;
+  padding:9px 14px;font-weight:700;font-size:15px;box-shadow:var(--sombra);
+  display:inline-flex;align-items:center;gap:8px;text-align:left;
+}
+.ficha .pos{
+  font-family:"Alfa Slab One",Georgia,serif;font-size:12px;
+  background:var(--arena2);border-radius:6px;padding:1px 6px;
+}
+.ficha:hover:not(:disabled){background:var(--arena2)}
+.ficha.bien{background:var(--verde);color:var(--sobre);border-color:var(--verde)}
+.ficha.mal{background:var(--rojo);color:var(--sobre);border-color:var(--rojo2)}
+.ficha.bien .pos,.ficha.mal .pos{background:transparent;box-shadow:inset 0 0 0 2px currentColor}
+
+/* parear dos columnas */
+.parejas{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.parejas .columna{display:flex;flex-direction:column;gap:8px}
+.par{
+  background:var(--panel);border:2px solid var(--tinta);border-radius:10px;
+  padding:11px 12px;font-weight:700;font-size:15px;box-shadow:var(--sombra);text-align:left;
+}
+.par:hover:not(:disabled){background:var(--arena2)}
+.par[aria-pressed="true"]{background:var(--oro);color:#2A1B3D;border-color:#A9741A}
+.par.unido{background:var(--verde);color:var(--sobre);border-color:var(--verde);opacity:1}
+.par.fallo{background:var(--rojo);color:var(--sobre);border-color:var(--rojo2)}
+.par:disabled{cursor:default}
+
+/* contar tocando */
+.conteo{display:grid;grid-template-columns:repeat(auto-fill,minmax(56px,1fr));gap:8px;max-width:420px}
+.pieza{
+  aspect-ratio:1;font-size:28px;background:var(--panel);border:2px solid var(--linea);
+  border-radius:12px;display:grid;place-items:center;transition:transform .1s ease;
+}
+.pieza:hover:not(:disabled){background:var(--arena2)}
+.pieza[aria-pressed="true"]{background:var(--turquesa);border-color:var(--turquesa);transform:scale(.94)}
+.pieza:disabled{cursor:default}
+
+/* ---------- telón ---------- */
+.telon{text-align:center;padding:34px 18px}
+.telon .grande{font-size:clamp(40px,12vw,74px);line-height:1;margin:0}
+.telon h2{font-size:clamp(24px,5vw,34px);margin:12px 0 6px}
+.telon p{color:var(--tinta2);max-width:44ch;margin:0 auto}
+
+#confeti{position:fixed;inset:0;pointer-events:none;z-index:50}
+
+/* ---------- capa modal ---------- */
+.capa{position:fixed;inset:0;background:rgba(20,12,40,.72);display:grid;place-items:center;padding:18px;z-index:60}
+.boleto{background:var(--panel);border:3px solid var(--rojo);border-radius:16px;padding:24px;max-width:440px;width:100%;box-shadow:0 8px 0 rgba(0,0,0,.3);max-height:92vh;overflow-y:auto}
+.boleto h2{font-size:24px;color:var(--rojo);margin-bottom:6px}
+.boleto p{margin:0 0 14px;font-size:15px;color:var(--tinta2)}
+
+/* ---------- instalar / sin conexión ---------- */
+.aviso-linea{
+  display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;
+  padding:10px 16px;font-size:13.5px;font-weight:700;
+  background:var(--arena2);border-bottom:1px solid var(--linea);
+}
+.aviso-linea .btn{padding:6px 14px;font-size:13px}
+.pie{
+  margin-top:44px;padding-top:18px;border-top:1px solid var(--linea);
+  font-size:13px;color:var(--tinta2);display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;
+}
+
+.altavoz{border:2px solid var(--tinta);background:var(--panel);border-radius:999px;padding:5px 13px;font-size:13px;font-weight:900;box-shadow:var(--sombra)}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation:none!important;transition:none!important}
+}
+@media (max-width:420px){
+  .parejas{grid-template-columns:1fr}
+  .parejas .columna:first-child{border-bottom:2px dashed var(--linea);padding-bottom:10px}
+}
+
+</style>
+</head>
+<body>
+<script>window.CARPA_UNICO = true;</script>
+<div id="paginaInicio">
+<div class="aviso-linea" id="avisoLinea" hidden>
+  <span id="textoAviso"></span>
+  <button class="btn" id="btnInstalar" type="button" hidden>Guardar en este aparato</button>
+</div>
+
+<header class="marquesina">
+  <h1 class="marca">Carpa de Saberes</h1>
+  <p class="lema">Escuela de pista · 6 números en cartelera</p>
+</header>
+<div class="banderines" id="banderines" aria-hidden="true"></div>
+
+<main class="envoltura">
+
+  <!-- ===== quién eres ===== -->
+  <section class="seccion" id="vistaArtistas">
+    <p class="rotulo">Antes de entrar</p>
+    <h2 class="titulo-seccion">¿Quién eres hoy?</h2>
+    <p style="color:var(--tinta2);max-width:56ch;margin:0 0 20px">
+      Toca tu cara para seguir donde te quedaste. Si es tu primera vez, crea tu artista.
+    </p>
+    <div class="artistas" id="rejillaArtistas"></div>
+
+    <div class="pie">
+      <span>Tus estrellas se guardan en este aparato, no en internet.</span>
+      <span id="estadoOffline"></span>
+    </div>
+  </section>
+
+  <!-- ===== alta / edición ===== -->
+  <section class="seccion" id="vistaAlta" hidden>
+    <button class="volver" id="btnCancelar" type="button">← Volver</button>
+    <p class="rotulo" id="rotuloAlta">Nuevo artista</p>
+    <h2 class="titulo-seccion" id="tituloAlta">Crea tu artista</h2>
+
+    <div class="formulario">
+      <div class="campo">
+        <label class="rotulo" for="campoNombre">Tu nombre</label>
+        <input id="campoNombre" type="text" maxlength="18" autocomplete="off" placeholder="Ej. Lucía">
+        <p id="errorNombre" style="color:var(--rojo);font-size:14px;font-weight:700;margin:8px 0 0" hidden></p>
+      </div>
+
+      <div class="campo">
+        <span class="rotulo">Escoge tu cara</span>
+        <div class="caras" id="listaCaras" role="group" aria-label="Escoge tu cara"></div>
+      </div>
+
+      <div class="campo">
+        <span class="rotulo">¿En qué parte de la pista estás?</span>
+        <div class="niveles-op" id="listaNiveles" role="group" aria-label="Nivel"></div>
+      </div>
+
+      <div class="acciones">
+        <button class="btn btn--rojo" id="btnGuardar" type="button">Entrar a la Estación →</button>
+        <button class="btn" id="btnBorrar" type="button" hidden>Borrar este artista</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+</div>
+<div id="paginaEstacion" hidden>
+<canvas id="confeti" aria-hidden="true"></canvas>
+
+<header class="marquesina">
+  <h1 class="marca"><a href="index.html">Carpa de Saberes</a></h1>
+  <p class="lema">La Estación · 6 números en cartelera</p>
+  <div class="barra-perfil">
+    <a class="chip chip--btn" id="chipArtista" href="index.html"><span id="caraArtista">🎪</span> <span id="txtNombre">Artista</span></a>
+    <span class="chip">🎟️ <b id="txtBoletos">0</b> boletos</span>
+    <span class="chip">⭐ <b id="txtEstrellas">0</b> estrellas</span>
+    <a class="chip chip--btn" href="index.html">🔄 Cambiar</a>
+  </div>
+</header>
+<div class="banderines" id="banderinesEstacion" aria-hidden="true"></div>
+
+<main class="envoltura">
+
+  <!-- ===== PROGRAMA ===== -->
+  <section class="vista" id="vistaPrograma" tabindex="-1">
+    <div class="seccion">
+      <p class="rotulo" id="rotuloNivel">Tu nivel</p>
+      <h2 class="titulo-seccion" id="tituloPrograma">El programa de la función</h2>
+      <div class="programa" id="rejillaCursos"></div>
+      <div class="pie">
+        <span>Tus estrellas se guardan solo en este aparato.</span>
+        <a href="index.html" class="volver" style="padding:0">Cambiar de artista</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CURSO ===== -->
+  <section class="vista" id="vistaCurso" tabindex="-1" hidden>
+    <button class="volver" data-ir="programa" type="button">← Volver al programa</button>
+    <div class="encabezado-curso">
+      <span class="icono" id="cursoIcono">🎪</span>
+      <div>
+        <p class="rotulo" id="cursoNivel">Nivel</p>
+        <h2 class="titulo-seccion" id="cursoTitulo" style="margin-bottom:0">Curso</h2>
+      </div>
+    </div>
+    <p id="cursoDesc" style="color:var(--tinta2);max-width:58ch;margin:6px 0 0"></p>
+    <div class="lista-lecciones" id="listaLecciones"></div>
+  </section>
+
+  <!-- ===== LECCIÓN ===== -->
+  <section class="vista" id="vistaLeccion" tabindex="-1" hidden>
+    <button class="volver" data-ir="curso" type="button">← Volver a las lecciones</button>
+    <div class="pizarra">
+      <p class="rotulo" id="lecRotulo">Lección</p>
+      <h2 id="lecTitulo">Título</h2>
+      <button class="altavoz" type="button" id="btnLeer">🔊 Escuchar</button>
+      <div id="lecCuerpo"></div>
+      <div class="acciones">
+        <button class="btn btn--rojo" id="btnEmpezar" type="button">A la pista →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== EJERCICIOS ===== -->
+  <section class="vista" id="vistaPista" tabindex="-1" hidden>
+    <button class="volver" data-ir="leccion" type="button">← Repasar la lección</button>
+    <div class="pista">
+      <div class="contador">
+        <span id="pistaPaso">Pregunta 1 de 5</span>
+        <button class="altavoz" type="button" id="btnLeerPregunta">🔊 Leer</button>
+      </div>
+      <div class="riel"><i id="rielBarra" style="width:0%"></i></div>
+      <div id="zonaPregunta"></div>
+    </div>
+  </section>
+
+  <!-- ===== TELÓN ===== -->
+  <section class="vista" id="vistaTelon" tabindex="-1" hidden>
+    <div class="pista telon">
+      <p class="grande" id="telonEmoji">🎉</p>
+      <div class="estrellas" id="telonEstrellas" style="font-size:34px"></div>
+      <h2 id="telonTitulo">¡Buen número!</h2>
+      <p id="telonTexto"></p>
+      <div class="acciones" style="justify-content:center">
+        <button class="btn btn--oro" id="btnOtraVez" type="button">Intentar de nuevo</button>
+        <button class="btn" data-ir="curso" type="button">Otra lección</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+</div>
+<script>
+/* Carpa de Saberes — perfiles y progreso
+   Compartido por inicio y estación. Todo vive en el aparato del niño:
+   nada de esto sale a ningún servidor. */
+(function(){
+'use strict';
+
+var K_PERFILES = 'carpa:perfiles';
+var K_ACTIVO   = 'carpa:activo';
+var K_PROG     = 'carpa:prog:';
+
+var NIVELES = [
+  {id:'semillas',     nombre:'Semillas',     edad:'4 a 6 años'},
+  {id:'malabaristas', nombre:'Malabaristas', edad:'7 a 8 años'},
+  {id:'acrobatas',    nombre:'Acróbatas',    edad:'9 a 11 años'}
+];
+
+var CARAS = ['🤹','🎪','🤡','🎩','🦁','🐘','🐧','🦓','🎭','🎠','🪄','🎈','🐴','🦜','⭐','🌟'];
+
+function leer(k, d){
+  try{ var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; }
+  catch(e){ return d; }
+}
+function guardar(k, v){
+  try{ localStorage.setItem(k, JSON.stringify(v)); return true; }
+  catch(e){ return false; }
+}
+
+function nuevoId(){
+  return 'a' + Date.now().toString(36) + Math.floor(Math.random()*1e4).toString(36);
+}
+
+function perfiles(){
+  var lista = leer(K_PERFILES, []);
+  return Array.isArray(lista) ? lista : [];
+}
+function guardarPerfiles(lista){ return guardar(K_PERFILES, lista); }
+
+function crear(datos){
+  var lista = perfiles();
+  var p = {
+    id: nuevoId(),
+    nombre: String(datos.nombre || '').trim().slice(0,18) || 'Artista',
+    cara: datos.cara || CARAS[0],
+    nivel: nivelValido(datos.nivel) ? datos.nivel : 'malabaristas',
+    creado: Date.now()
+  };
+  lista.push(p);
+  guardarPerfiles(lista);
+  return p;
+}
+
+function actualizar(id, cambios){
+  var lista = perfiles();
+  for(var i=0;i<lista.length;i++){
+    if(lista[i].id === id){
+      if(cambios.nombre !== undefined) lista[i].nombre = String(cambios.nombre).trim().slice(0,18) || lista[i].nombre;
+      if(cambios.cara   !== undefined) lista[i].cara = cambios.cara;
+      if(cambios.nivel  !== undefined && nivelValido(cambios.nivel)) lista[i].nivel = cambios.nivel;
+      guardarPerfiles(lista);
+      return lista[i];
+    }
+  }
+  return null;
+}
+
+function borrar(id){
+  guardarPerfiles(perfiles().filter(function(p){ return p.id !== id; }));
+  try{ localStorage.removeItem(K_PROG + id); }catch(e){}
+  if(leer(K_ACTIVO, '') === id){ try{ localStorage.removeItem(K_ACTIVO); }catch(e){} }
+}
+
+function porId(id){
+  var f = perfiles().filter(function(p){ return p.id === id; });
+  return f.length ? f[0] : null;
+}
+
+function activar(id){ guardar(K_ACTIVO, id); }
+function activo(){ return porId(leer(K_ACTIVO, '')); }
+function salir(){ try{ localStorage.removeItem(K_ACTIVO); }catch(e){} }
+
+function nivelValido(n){
+  return NIVELES.some(function(x){ return x.id === n; });
+}
+function nivelPorId(n){
+  var f = NIVELES.filter(function(x){ return x.id === n; });
+  return f.length ? f[0] : NIVELES[1];
+}
+
+/* ---------- progreso ---------- */
+function progreso(id){ return leer(K_PROG + id, {}) || {}; }
+function guardarProgreso(id, prog){ return guardar(K_PROG + id, prog); }
+
+function resumen(id){
+  var prog = progreso(id), boletos = 0, estrellas = 0, lecciones = 0;
+  Object.keys(prog).forEach(function(k){
+    boletos   += prog[k].aciertos  || 0;
+    estrellas += prog[k].estrellas || 0;
+    if((prog[k].estrellas || 0) > 0) lecciones++;
+  });
+  return {boletos:boletos, estrellas:estrellas, lecciones:lecciones};
+}
+
+/* ---------- migración desde la versión de un solo archivo ----------
+   Antes había un solo nombre suelto ('carpa:perfil') y el progreso
+   colgaba del nombre, no de un id. Se convierte a un perfil de verdad
+   para que nadie pierda sus estrellas al actualizar. */
+function migrar(){
+  var viejoNombre;
+  try{ viejoNombre = JSON.parse(localStorage.getItem('carpa:perfil') || 'null'); }
+  catch(e){ viejoNombre = null; }
+  if(!viejoNombre) return false;
+
+  var yaEsta = perfiles().some(function(p){ return p.nombre === viejoNombre; });
+  if(!yaEsta){
+    var nivelViejo;
+    try{ nivelViejo = JSON.parse(localStorage.getItem('carpa:nivel') || 'null'); }catch(e){}
+    var p = crear({nombre: viejoNombre, cara: CARAS[0], nivel: nivelViejo || 'malabaristas'});
+    var progViejo = leer('carpa:prog:' + viejoNombre, null);
+    if(progViejo && Object.keys(progViejo).length) guardarProgreso(p.id, progViejo);
+  }
+  try{ localStorage.removeItem('carpa:perfil'); }catch(e){}
+  return true;
+}
+
+/* ---------- utilidades compartidas ---------- */
+function esc(s){
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function estrellasTxt(n){ return '★★★'.slice(0,n) + '☆☆☆'.slice(0, 3-n); }
+
+function banderines(el){
+  if(!el) return;
+  var cols = ['var(--rojo)','var(--oro)','var(--turquesa)'];
+  var n = Math.ceil(innerWidth / 26) + 4, html = '';
+  for(var i=0;i<n;i++){ html += '<i style="background:' + cols[i%3] + '"></i>'; }
+  el.innerHTML = html;
+}
+
+window.Carpa = {
+  NIVELES: NIVELES, CARAS: CARAS,
+  perfiles: perfiles, crear: crear, actualizar: actualizar, borrar: borrar,
+  porId: porId, activar: activar, activo: activo, salir: salir,
+  nivelPorId: nivelPorId, nivelValido: nivelValido,
+  progreso: progreso, guardarProgreso: guardarProgreso, resumen: resumen,
+  migrar: migrar, esc: esc, estrellasTxt: estrellasTxt, banderines: banderines
+};
+
+})();
+
+</script>
+<script>
+window.DATOS_A = [
+{
+  id:"mate", nombre:"Matemáticas", icono:"🤹",
+  desc:"Contar, sumar, repartir y medir con todo lo que hay bajo la carpa.",
+  niveles:{
+  semillas:[
+    { titulo:"Contar en la pista", intro:"En el circo todo se cuenta: los aros, las pelotas, los boletos. Vamos a contar juntos hasta 10.",
+      puntos:["Cada cosa que señalas vale un número y solo uno.","Contamos siempre en el mismo orden: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10.","El último número que dices es cuántas cosas hay.","Si agregas una cosa más, el número crece; si quitas, el número baja."],
+      dato:"Un malabarista experto puede tener 5 pelotas en el aire y solo 1 en la mano.",
+      lectura:null,
+      ejercicios:[
+        {t:"op", p:"¿Cuántos aros ves?", emoji:"🔴🔴🔴", o:["3","2","4"], r:0, ex:"Señala uno por uno: 1, 2, 3. Son 3 aros."},
+        {t:"op", p:"¿Cuántas pelotas hay?", emoji:"🟡🟡🟡🟡🟡", o:["4","5","6"], r:1, ex:"Contando: 1, 2, 3, 4, 5. Son 5 pelotas."},
+        {t:"op", p:"¿Qué número va después del 6?", o:["5","9","7"], r:2, ex:"El orden es 5, 6, 7. Después del 6 siempre viene el 7."},
+        {t:"op", p:"Hay 2 elefantes y llega 1 más. ¿Cuántos hay?", emoji:"🐘🐘 ➕ 🐘", o:["3","2","4"], r:0, ex:"2 y 1 más son 3. Cuando llega uno más, el número sube uno."},
+        {t:"vf", p:"Hay más globos que pelotas: 🎈🎈🎈🎈 y 🟡🟡", r:true, ex:"Cuenta: 4 globos y 2 pelotas. 4 es más que 2."}
+      ]},
+    { titulo:"Las formas del circo", intro:"La carpa, los aros y la pista tienen formas. Si aprendes sus nombres, las vas a ver por todos lados.",
+      puntos:["El círculo es redondo y no tiene esquinas.","El triángulo tiene 3 lados y 3 puntas.","El cuadrado tiene 4 lados iguales.","La pista donde salen los artistas es un círculo grande."],
+      dato:"La pista de circo mide casi siempre 13 metros de ancho, porque es la distancia justa para que un caballo corra en círculo.",
+      lectura:null,
+      ejercicios:[
+        {t:"op", p:"¿Qué forma tiene un aro?", emoji:"⭕", o:["Cuadrado","Círculo","Triángulo"], r:1, ex:"El aro es redondo y no tiene esquinas: es un círculo."},
+        {t:"op", p:"¿Cuántos lados tiene un cuadrado?", emoji:"🟦", o:["3","5","4"], r:2, ex:"Cuenta las orillas del cuadrado: son 4 y todas del mismo tamaño."},
+        {t:"op", p:"La punta de la carpa se parece a un…", emoji:"⛺", o:["Triángulo","Círculo","Cuadrado"], r:0, ex:"La punta de la carpa sube y hace 3 lados: es un triángulo."},
+        {t:"vf", p:"Un círculo tiene esquinas.", r:false, ex:"No. El círculo es todo redondito y no tiene ninguna esquina."},
+        {t:"op", p:"¿Cuál de estas cosas es redonda?", o:["Una caja","Una pelota","Un libro"], r:1, ex:"La pelota rueda porque es redonda. La caja y el libro tienen esquinas."}
+      ]}
+  ],
+  malabaristas:[
+    { titulo:"Sumas y restas de la función", intro:"Vender boletos, contar palomitas y acomodar sillas: todo el día se suma y se resta en el circo.",
+      puntos:["Sumar es juntar: los dos grupos se vuelven uno más grande.","Restar es quitar: buscas cuánto queda.","Si llevas más de 10, puedes separar en decenas y unidades: 12 es 10 + 2.","Para comprobar una resta, súmala al revés: si 25 − 18 = 7, entonces 7 + 18 debe dar 25."],
+      dato:"Antes de cada función, la taquilla cuenta los boletos dos veces: una al venderlos y otra al terminar.",
+      lectura:null,
+      ejercicios:[
+        {t:"num", p:"Se vendieron 12 boletos en la mañana y 9 en la tarde. ¿Cuántos en total?", r:21, ex:"12 + 9 = 21. Puedes hacerlo así: 12 + 8 = 20, y falta 1 más, 21."},
+        {t:"num", p:"Había 30 bolsas de palomitas y se vendieron 14. ¿Cuántas quedan?", r:16, ex:"30 − 14 = 16. Quita primero 10 (quedan 20) y luego 4 más (quedan 16)."},
+        {t:"op", p:"¿Cuál es el doble de 8?", o:["12","18","16"], r:2, ex:"El doble es sumar el número consigo mismo: 8 + 8 = 16."},
+        {t:"num", p:"En la carpa hay 25 sillas y se sientan 18 personas. ¿Cuántas sillas quedan vacías?", r:7, ex:"25 − 18 = 7. Comprueba: 7 + 18 = 25."},
+        {t:"vf", p:"Si sumas 0 a un número, el número no cambia.", r:true, ex:"Verdadero. Sumar cero es no agregar nada: 14 + 0 = 14."}
+      ]},
+    { titulo:"Multiplicar y repartir", intro:"Cuando algo se repite muchas veces, multiplicar es más rápido que sumar.",
+      puntos:["Multiplicar es sumar grupos iguales: 3 × 4 es 4 + 4 + 4.","Dividir es repartir en partes iguales.","Multiplicar y dividir son operaciones contrarias: si 6 × 7 = 42, entonces 42 ÷ 7 = 6.","La mitad de un número es dividirlo entre 2."],
+      dato:"Los trapecistas ensayan un salto entre 200 y 300 veces antes de hacerlo frente al público.",
+      lectura:null,
+      ejercicios:[
+        {t:"num", p:"3 payasos traen 4 globos cada uno. ¿Cuántos globos hay?", emoji:"🤡🤡🤡", r:12, ex:"3 × 4 = 12. Es lo mismo que 4 + 4 + 4."},
+        {t:"num", p:"¿Cuánto es 6 × 7?", r:42, ex:"6 × 7 = 42. Truco: 6 × 7 es lo mismo que 7 × 6."},
+        {t:"num", p:"Hay 24 pelotas de malabares para 4 artistas, en partes iguales. ¿Cuántas le tocan a cada uno?", r:6, ex:"24 ÷ 4 = 6, porque 4 × 6 = 24."},
+        {t:"op", p:"¿Cuál es la mitad de 18?", o:["9","8","10"], r:0, ex:"La mitad es dividir entre 2: 18 ÷ 2 = 9, porque 9 + 9 = 18."},
+        {t:"txt", p:"9 trapecistas se acomodan en filas de 3. ¿Cuántas filas se forman? Escribe el número.", r:["3","tres"], ex:"9 ÷ 3 = 3 filas, porque 3 × 3 = 9."}
+      ]}
+  ],
+  acrobatas:[
+    { titulo:"Fracciones bajo la carpa", intro:"Media pizza, tres cuartos de hora, la mitad del público. Las fracciones sirven para hablar de partes de algo.",
+      puntos:["En una fracción, el número de abajo dice en cuántas partes iguales se partió el entero.","El número de arriba dice cuántas de esas partes tomas.","Fracciones distintas pueden valer lo mismo: 2/4 es igual a 1/2.","Un porcentaje es una fracción de 100: 60 % significa 60 de cada 100."],
+      dato:"Cuando dos fracciones tienen el mismo número de arriba, es más grande la que tiene el número de abajo más chico: 1/2 es mayor que 1/8.",
+      lectura:null,
+      ejercicios:[
+        {t:"num", p:"La carpa tiene 40 lugares y se ocupó 1/2. ¿Cuántas personas entraron?", r:20, ex:"1/2 de 40 es 40 ÷ 2 = 20."},
+        {t:"op", p:"¿Cuál cantidad es mayor?", o:["1/2 de un pastel","3/4 de un pastel","Las dos son iguales"], r:1, ex:"1/2 son 2 cuartos y 3/4 son 3 cuartos. 3 cuartos es más."},
+        {t:"op", p:"¿Qué fracción vale lo mismo que 2/4?", o:["1/4","2/3","1/2"], r:2, ex:"Si divides arriba y abajo entre 2: 2÷2 = 1 y 4÷2 = 2. Queda 1/2."},
+        {t:"num", p:"Escribe 3/4 como decimal usando punto (por ejemplo 0.5).", r:0.75, ex:"3 ÷ 4 = 0.75. Es lo mismo que 75 %."},
+        {t:"num", p:"Se imprimieron 150 boletos y se vendió el 60 %. ¿Cuántos boletos se vendieron?", r:90, ex:"10 % de 150 es 15. Como 60 % son seis veces 10 %: 15 × 6 = 90."}
+      ]},
+    { titulo:"Medir la pista y el reloj", intro:"Para armar una carpa hay que medir. Para no pasarse de la función, hay que calcular el tiempo.",
+      puntos:["El perímetro es lo que mide el contorno: se suman todos los lados.","El área es la superficie que cubre: en un rectángulo es base × altura.","Una hora tiene 60 minutos, así que 1 h 45 min son 105 minutos.","El promedio se saca sumando todos los datos y dividiendo entre cuántos son."],
+      dato:"Una carpa mediana de circo puede pesar 6 toneladas y necesita 20 personas para levantarla.",
+      lectura:null,
+      ejercicios:[
+        {t:"num", p:"La pista es un cuadrado de 12 m por lado. ¿Cuánto mide su perímetro en metros?", r:48, ex:"Perímetro = 12 + 12 + 12 + 12 = 48 m. También 12 × 4."},
+        {t:"num", p:"El escenario es un rectángulo de 8 m por 5 m. ¿Cuál es su área en metros cuadrados?", r:40, ex:"Área = base × altura = 8 × 5 = 40 m²."},
+        {t:"num", p:"La función dura 1 hora y 45 minutos. ¿Cuántos minutos son?", r:105, ex:"1 hora son 60 minutos. 60 + 45 = 105 minutos."},
+        {t:"num", p:"Tres funciones tuvieron 8, 10 y 12 artistas. ¿Cuál es el promedio?", r:10, ex:"8 + 10 + 12 = 30, y 30 ÷ 3 = 10 artistas en promedio."},
+        {t:"vf", p:"Dos figuras con el mismo perímetro siempre tienen la misma área.", r:false, ex:"Falso. Un cuadrado de 4×4 y un rectángulo de 6×2 miden 16 de perímetro, pero sus áreas son 16 y 12."}
+      ]}
+  ]
+  }
+},
+{
+  id:"esp", nombre:"Español", icono:"✍️",
+  desc:"Letras, palabras y reglas para escribir lo que quieras decir.",
+  niveles:{
+  semillas:[
+    { titulo:"Las vocales del circo", intro:"Solo hay cinco vocales y con ellas empieza casi todo. Vamos a buscarlas.",
+      puntos:["Las vocales son a, e, i, o, u. Son cinco.","Toda palabra lleva por lo menos una vocal.","Las demás letras se llaman consonantes.","Si dices la palabra despacito, oyes con qué letra empieza."],
+      dato:"La palabra \"murciélago\" es famosa porque tiene las cinco vocales, una sola vez cada una.",
+      lectura:null,
+      ejercicios:[
+        {t:"op", p:"¿Con qué vocal empieza \"elefante\"?", emoji:"🐘", o:["e","a","i"], r:0, ex:"E-le-fan-te. Empieza con la letra e."},
+        {t:"op", p:"¿Con qué vocal empieza \"aro\"?", emoji:"⭕", o:["o","a","u"], r:1, ex:"A-ro. La primera letra es la a."},
+        {t:"op", p:"¿Cuántas vocales hay en total?", o:["3","7","5"], r:2, ex:"Son cinco: a, e, i, o, u."},
+        {t:"op", p:"¿Cuál palabra empieza con la letra o?", o:["oso","pato","silla"], r:0, ex:"O-so empieza con o. Pato empieza con p y silla con s."},
+        {t:"vf", p:"La letra p es una vocal.", r:false, ex:"No. La p es consonante. Las vocales son a, e, i, o, u."}
+      ]},
+    { titulo:"Palmas y sílabas", intro:"Cada palabra se puede aplaudir por pedacitos. Esos pedacitos se llaman sílabas.",
+      puntos:["Una sílaba es un golpe de voz: pa-ya-so son tres palmas.","Las palabras cortas tienen pocas sílabas; las largas, muchas.","Para contarlas, di la palabra despacio y aplaude en cada pedazo.","Todas las sílabas llevan una vocal."],
+      dato:"La palabra más corta del español tiene una sola letra: la y, que sirve para juntar cosas.",
+      lectura:null,
+      ejercicios:[
+        {t:"op", p:"¿Cuántas palmas tiene pa-ya-so?", emoji:"🤡", o:["2","3","4"], r:1, ex:"Pa (1), ya (2), so (3). Son 3 sílabas."},
+        {t:"op", p:"¿Cuántas palmas tiene cir-co?", emoji:"🎪", o:["3","4","2"], r:2, ex:"Cir (1), co (2). Son 2 sílabas."},
+        {t:"op", p:"¿Cuántas palmas tiene ma-la-ba-res?", o:["4","3","5"], r:0, ex:"Ma, la, ba, res. Son 4 sílabas."},
+        {t:"op", p:"¿Cuál palabra es más larga?", o:["sol","trapecista"], r:1, ex:"Sol tiene 1 sílaba y trapecista tiene 4: tra-pe-cis-ta."},
+        {t:"vf", p:"La palabra \"pan\" se aplaude una sola vez.", r:true, ex:"Verdadero. Pan es una sola sílaba, un solo golpe de voz."}
+      ]}
+  ],
+  malabaristas:[
+    { titulo:"Cosas, acciones y cómo son", intro:"En cada oración hay algo que nombra, algo que hace y algo que describe. Vamos a separarlos.",
+      puntos:["El sustantivo nombra cosas, personas, animales o lugares: carpa, payaso, león.","El verbo dice la acción: salta, corre, aplaude.","El adjetivo dice cómo es algo: grande, valiente, roja.","En \"El payaso salta alto\", payaso es sustantivo y salta es verbo."],
+      dato:"En español el adjetivo casi siempre va después: decimos \"carpa roja\", no \"roja carpa\".",
+      lectura:null,
+      ejercicios:[
+        {t:"op", p:"En \"El payaso salta\", ¿cuál es el verbo?", o:["El","payaso","salta"], r:2, ex:"El verbo es la acción. Lo que se hace es saltar, entonces es \"salta\"."},
+        {t:"op", p:"En \"la carpa grande\", ¿cuál palabra es el adjetivo?", o:["grande","la","carpa"], r:0, ex:"Grande dice cómo es la carpa, así que es el adjetivo."},
+        {t:"op", p:"¿Cuál de estas palabras es un sustantivo?", o:["correr","trapecio","rápido"], r:1, ex:"Trapecio nombra una cosa. Correr es verbo y rápido es adjetivo."},
+        {t:"vf", p:"\"Nosotros saltamos\" está escrito en plural.", r:true, ex:"Verdadero. Nosotros son varias personas, por eso el verbo termina en -mos."},
+        {t:"txt", p:"Escribe el femenino de \"león\".", r:["leona","la leona"], ex:"El femenino de león es leona. A muchos animales se les agrega una -a al final."}
+      ]},
+    { titulo:"Mayúsculas, comas y signos", intro:"Los signos son las señales del texto: dicen dónde parar, dónde preguntar y dónde gritar.",
+      puntos:["Se escribe mayúscula al empezar y después de un punto.","Los nombres propios llevan mayúscula: Lucía, México, Circo Atayde.","La coma separa los elementos de una lista.","En español la pregunta se abre con ¿ y se cierra con ?; la exclamación con ¡ y !"],
+      dato:"El español es de los poquísimos idiomas que abren la pregunta con un signo al revés. Se hizo así para saber desde el principio cómo entonar la frase.",
+      lectura:null,
+      ejercicios:[
+        {t:"op", p:"¿Cuál oración está bien escrita?", sinListaVoz:true, o:["vamos al circo.","Vamos al circo","Vamos al circo."], r:2, ex:"Empieza con mayúscula y termina con punto. Las dos cosas son necesarias."},
+        {t:"txt", p:"Escribe el signo que se pone al INICIO de una pregunta.", r:["¿"], ex:"En español la pregunta se abre con ¿ y se cierra con ?"},
+        {t:"vf", p:"Los nombres propios se escriben con mayúscula.", r:true, ex:"Verdadero. Lucía, Puebla y Circo Atayde llevan mayúscula porque son nombres propios."},
+        {t:"op", p:"¿Qué le falta a esta oración? \"Compré palomitas manzanas y agua\"", o:["Comas","Un acento","Nada"], r:0, ex:"Debe ser \"palomitas, manzanas y agua\". La coma separa la lista."},
+        {t:"op", p:"¿Cuál está bien escrita?", sinListaVoz:true, o:["Qué función!","¡Qué función!","¡Qué función"], r:1, ex:"La exclamación se abre con ¡ y se cierra con !, las dos."}
+      ]}
+  ],
+  acrobatas:[
+    { titulo:"Ortografía que no se cae", intro:"Hay palabras que suenan igual y se escriben distinto. Si sabes qué significan, no te equivocas.",
+      puntos:["\"A ver\" son dos palabras y significa mirar: voy a ver la función.","\"Haber\" es verbo: tiene que haber boletos.","\"Hubo\" no cambia aunque haya muchas cosas: hubo muchos aplausos, nunca \"hubieron\".","Las palabras agudas llevan tilde si terminan en n, s o vocal: camión, además, café."],
+      dato:"Cambiar una tilde cambia todo: \"él canto\" y \"él cantó\" no significan lo mismo.",
+      lectura:null,
+      ejercicios:[
+        {t:"op", p:"¿Cuál es correcta? \"Voy ___ la función.\"", o:["haber","aver","a ver"], r:2, ex:"Son dos palabras: vas a mirar algo. \"Haber\" es otro verbo distinto."},
+        {t:"op", p:"¿Cuál es correcta?", o:["Hubieron muchos aplausos","Hubo muchos aplausos"], r:1, ex:"Cuando \"haber\" dice que algo existe, siempre va en singular: hubo."},
+        {t:"op", p:"¿Cuál de estas palabras está bien escrita?", sinListaVoz:true, o:["camion","camión","cámion"], r:1, ex:"Es aguda (la fuerza va en la última sílaba) y termina en n, así que lleva tilde en la o: camión."},
+        {t:"txt", p:"Escribe el plural de \"lápiz\".", r:["lapices","lápices"], ex:"La z se cambia por c y se agrega -es: lápices."},
+        {t:"vf", p:"Todas las palabras agudas llevan tilde.", r:false, ex:"Falso. Solo llevan tilde si terminan en n, s o vocal. \"Reloj\" es aguda y no lleva."}
+      ]},
+    { titulo:"Armar un texto que se entienda", intro:"Escribir no es soltar frases sueltas. Un buen texto tiene orden y las piezas se amarran entre sí.",
+      puntos:["La introducción presenta el tema, el desarrollo lo explica y el cierre lo concluye.","Cada párrafo trata una sola idea principal.","Los conectores amarran las ideas: porque (causa), además (suma), luego (tiempo), pero (contraste).","Los sinónimos evitan repetir la misma palabra todo el tiempo."],
+      dato:"Un truco de escritores: si un párrafo no se puede resumir en una frase, seguramente traía dos ideas y hay que partirlo.",
+      lectura:null,
+      ejercicios:[
+        {t:"op", p:"¿Cómo se llama la parte del texto que presenta el tema?", o:["Conclusión","Desarrollo","Introducción"], r:2, ex:"La introducción va primero y dice de qué se va a hablar."},
+        {t:"op", p:"¿Qué conector sirve para dar una causa? \"No hubo función ___ llovió.\"", o:["porque","además","luego"], r:0, ex:"\"Porque\" explica la razón. \"Además\" suma y \"luego\" habla del tiempo."},
+        {t:"vf", p:"Un párrafo debe tratar una sola idea principal.", r:true, ex:"Verdadero. Si mezclas dos ideas, conviene partirlo en dos párrafos."},
+        {t:"op", p:"¿Cuál es sinónimo de \"asombroso\"?", o:["aburrido","increíble","pequeño"], r:1, ex:"Sinónimo es una palabra con significado parecido. Increíble y asombroso lo son."},
+        {t:"txt", p:"Escribe el antónimo de \"valiente\".", r:["cobarde","miedoso","temeroso"], ex:"Antónimo es lo contrario. Lo contrario de valiente es cobarde o miedoso."}
+      ]}
+  ]
+  }
+},
+{
+  id:"lect", nombre:"Español Lecturas", icono:"📖",
+  desc:"Historias para leer y preguntas para entender lo que dicen y lo que no dicen.",
+  niveles:{
+  semillas:[
+    { titulo:"Fito busca su nariz", intro:"Vamos a leer un cuento muy cortito. Escúchalo o léelo y después contesta.",
+      puntos:["Leer con calma y volver a leer si algo no se entendió.","Fijarse en quién es el personaje y qué le pasa."],
+      dato:"La nariz roja del payaso es el disfraz más pequeño del mundo.",
+      lectura:{ titulo:"Fito busca su nariz", texto:"Fito es un payaso. Fito tiene una nariz roja. Hoy la nariz no está. Fito busca en la caja. Busca en el sombrero. Busca en el zapato. ¡La nariz estaba en su bolsillo! Fito se ríe y sale a la pista." },
+      ejercicios:[
+        {t:"op", p:"¿Quién es Fito?", emoji:"🤡", o:["Un león","Un niño","Un payaso"], r:2, ex:"En la primera línea dice: \"Fito es un payaso\"."},
+        {t:"op", p:"¿De qué color es su nariz?", o:["Roja","Azul","Verde"], r:0, ex:"El cuento dice que Fito tiene una nariz roja."},
+        {t:"op", p:"¿Dónde estaba la nariz?", o:["En la caja","En su bolsillo","En el zapato"], r:1, ex:"Al final dice: \"¡La nariz estaba en su bolsillo!\"."},
+        {t:"vf", p:"Fito se puso triste al final.", r:false, ex:"No. El cuento dice que Fito se ríe y sale a la pista."},
+        {t:"op", p:"¿En cuál de estos lugares NO buscó Fito?", o:["En el sombrero","En el zapato","En la cama"], r:2, ex:"Buscó en la caja, en el sombrero y en el zapato. La cama nunca se menciona."}
+      ]},
+    { titulo:"La pelota que se fue", intro:"Otro cuento cortito. Pon atención al orden en que pasan las cosas.",
+      puntos:["En un cuento las cosas pasan en orden: primero, después, al final.","El final resuelve el problema del personaje."],
+      dato:"Los perros de circo aprenden trucos con juegos, nunca con castigos.",
+      lectura:{ titulo:"La pelota que se fue", texto:"Ana juega con su pelota azul. La pelota rueda y rueda. Sale de la carpa. Ana corre atrás de la pelota. Un perro atrapa la pelota. El perro se la lleva a Ana. Ana le da las gracias. Ahora juegan los dos." },
+      ejercicios:[
+        {t:"op", p:"¿De qué color es la pelota?", emoji:"🔵", o:["Azul","Roja","Amarilla"], r:0, ex:"El cuento dice \"su pelota azul\"."},
+        {t:"op", p:"¿Quién atrapa la pelota?", emoji:"🐶", o:["Ana","Un perro","Un payaso"], r:1, ex:"Dice: \"Un perro atrapa la pelota\"."},
+        {t:"op", p:"¿Qué pasa primero?", o:["La pelota sale de la carpa","El perro atrapa la pelota"], r:0, ex:"Primero la pelota rueda y sale. Después el perro la atrapa."},
+        {t:"vf", p:"Al final Ana y el perro juegan juntos.", r:true, ex:"Verdadero. La última línea dice: \"Ahora juegan los dos\"."},
+        {t:"op", p:"¿Cómo se siente Ana con el perro?", o:["Agradecida","Enojada","Asustada"], r:0, ex:"Ana le da las gracias, así que está agradecida."}
+      ]}
+  ],
+  malabaristas:[
+    { titulo:"El primer día en la cuerda floja", intro:"Una lectura más larga. Después de leerla vas a decir de qué se trataba y qué sintieron los personajes.",
+      puntos:["La idea principal es de qué trata todo el texto, no un detalle suelto.","Los sentimientos casi nunca se dicen con la palabra exacta: se adivinan por lo que hace el personaje.","Si una palabra es nueva, la frase de alrededor suele dar una pista."],
+      dato:"La cuerda de los equilibristas no está floja de verdad: se tensa tanto que suena como una cuerda de guitarra.",
+      lectura:{ titulo:"El primer día en la cuerda floja", texto:"A Marisol le sudaban las manos. La cuerda estaba a dos metros del suelo y se veía delgadísima, como un hilo. Don Beto, su maestro, le puso una mano en el hombro.\n\n—No mires tus pies —le dijo—. Mira el poste del otro lado y camina hacia él.\n\nMarisol subió. El primer paso fue horrible: la cuerda se movía como si tuviera vida propia. Se detuvo. Respiró. Levantó la vista y buscó el poste. Entonces dio el segundo paso, y el tercero, y de pronto ya estaba a la mitad.\n\nCuando llegó al otro lado, se dio cuenta de que llevaba un rato sin respirar. Abajo, Don Beto no aplaudía. Solo sonreía, con los brazos cruzados.\n\n—Mañana subimos un metro más —dijo." },
+      ejercicios:[
+        {t:"op", p:"¿De qué trata principalmente el texto?", o:["De cómo se construye una cuerda floja","Del primer intento de Marisol caminando en la cuerda","De la vida de Don Beto"], r:1, ex:"Todo el texto sigue a Marisol en su primer intento. Lo demás son detalles."},
+        {t:"op", p:"Al principio, ¿cómo se sentía Marisol?", o:["Aburrida","Enojada","Nerviosa"], r:2, ex:"Le sudaban las manos y el primer paso fue horrible: son señales de nervios. El texto nunca usa la palabra \"nerviosa\"."},
+        {t:"op", p:"¿Qué consejo le dio Don Beto?", o:["Que mirara el poste del otro lado","Que mirara sus pies","Que caminara rápido"], r:0, ex:"Le dijo: \"No mires tus pies. Mira el poste del otro lado\"."},
+        {t:"op", p:"¿Por qué Don Beto sonríe pero no aplaude?", o:["Porque no le gustó","Porque está contento pero sabe que apenas empieza","Porque no estaba viendo"], r:1, ex:"Está contento (sonríe) y al final propone subir un metro más: para él esto es solo el principio."},
+        {t:"txt", p:"En el texto, \"delgadísima\" quiere decir muy… Escribe la palabra.", r:["delgada","flaca","fina","delgadita"], ex:"La terminación -ísima significa \"muy\". Delgadísima es muy delgada, por eso la compara con un hilo."}
+      ]},
+    { titulo:"La carta del domador", intro:"Este texto es una carta. Las cartas se leen distinto: hay alguien que escribe y alguien que recibe.",
+      puntos:["En una carta hay que identificar quién escribe y a quién.","El propósito es para qué se escribió: informar, pedir, agradecer o convencer.","Un dato es algo comprobable; una opinión es lo que alguien piensa."],
+      dato:"Los circos modernos en México ya no pueden presentar animales silvestres: la ley lo prohíbe desde 2015.",
+      lectura:{ titulo:"Carta a los vecinos de San Andrés", texto:"Queridos vecinos:\n\nMe llamo Ernesto y trabajo en el Circo Estrella. Durante quince años cuidé animales; hoy me dedico a los caballos y a los perros que viven con nosotros y viajan en el mismo camión que yo.\n\nEsta semana instalamos la carpa en su terreno baldío. Sé que el ruido molesta y quiero pedirles algo: si algo les incomoda, vengan a decírmelo a mí antes que a nadie. Estoy todas las mañanas junto al portón azul.\n\nCreo que un circo se vuelve del pueblo donde se para. Por eso el jueves la entrada es gratis para todos los niños de San Andrés.\n\nCon respeto,\nErnesto Salgado" },
+      ejercicios:[
+        {t:"op", p:"¿Cuál es el propósito principal de la carta?", o:["Vender boletos caros","Explicar cómo se entrena a un caballo","Presentarse y abrir un canal para las quejas"], r:2, ex:"Ernesto se presenta y pide que le lleven las molestias a él directamente. Eso es lo que sostiene toda la carta."},
+        {t:"op", p:"¿A quién va dirigida?", o:["A los vecinos de San Andrés","A los otros artistas","A las autoridades"], r:0, ex:"Empieza con \"Queridos vecinos\" y menciona a los niños de San Andrés."},
+        {t:"op", p:"¿Cuál de estas frases es una OPINIÓN?", o:["Durante quince años cuidé animales","Creo que un circo se vuelve del pueblo donde se para","El jueves la entrada es gratis"], r:1, ex:"Empieza con \"creo que\": es lo que él piensa. Las otras dos se pueden comprobar."},
+        {t:"vf", p:"Ernesto ofrece entrada gratis a todos los adultos del pueblo.", r:false, ex:"Falso. La entrada gratis del jueves es para los niños de San Andrés."},
+        {t:"op", p:"En el texto, un \"terreno baldío\" es un terreno…", o:["lleno de casas","dentro de la ciudad grande","vacío y sin construir"], r:2, ex:"Se puede deducir: ahí instalaron una carpa entera, así que estaba vacío."}
+      ]}
+  ],
+  acrobatas:[
+    { titulo:"El circo que llegó al pueblo", intro:"Un relato con más capas. Aquí no basta con encontrar datos: hay que inferir lo que el texto sugiere sin decirlo.",
+      puntos:["Inferir es concluir algo que el texto no dice con todas sus letras, usando pistas.","El narrador puede ser un personaje (dice \"yo\") o alguien de fuera.","El conflicto es el problema que mueve la historia.","El tono es la actitud del texto: nostálgico, alegre, tenso."],
+      dato:"El circo tradicional mexicano tiene más de 200 años; la familia Atayde lleva desde 1888 en el oficio.",
+      lectura:{ titulo:"El circo que llegó al pueblo", texto:"Nunca pasaba nada en Tepetongo. Por eso, cuando aparecieron los camiones amarillos por la carretera, mi abuela salió a la puerta secándose las manos en el delantal y se quedó ahí parada, mirando, hasta que el último camión entró al llano.\n\nMe dijo que cuando ella era niña también había llegado un circo. Que su papá no la dejó ir. Que se subió al techo del gallinero y desde ahí vio, muy chiquitos, a los trapecistas.\n\nEsa tarde ayudamos a levantar la carpa. Un señor con las manos llenas de callos me enseñó a tensar una cuerda: hay que jalar con el peso del cuerpo, no con los brazos. Trabajamos hasta que oscureció.\n\nCuando terminamos, mi abuela le preguntó al señor cuánto costaba la entrada.\n\n—Ustedes ya pagaron —dijo él, y le dio dos boletos.\n\nMi abuela los guardó en el delantal y no los soltó en toda la noche." },
+      ejercicios:[
+        {t:"op", p:"¿Quién narra la historia?", o:["Un nieto o nieta que estuvo ahí","La abuela","El señor del circo"], r:0, ex:"Usa \"mi abuela\" y \"me dijo\": narra alguien que participó en los hechos, en primera persona."},
+        {t:"op", p:"¿Por qué la abuela guardó los boletos y no los soltó en toda la noche?", o:["Porque tenía miedo de perderlos","Porque de niña se quedó sin ver el circo y esto le importaba mucho","Porque valían mucho dinero"], r:1, ex:"El texto cuenta antes que su papá no la dejó ir y tuvo que verlo desde un gallinero. El boleto vale por esa espera, no por el dinero. Eso es inferir."},
+        {t:"op", p:"¿Qué quiso decir el señor con \"Ustedes ya pagaron\"?", o:["Que pagaron con dinero antes","Que se equivocó de personas","Que su trabajo levantando la carpa fue el pago"], r:2, ex:"Habían trabajado toda la tarde tensando cuerdas. El pago fue el trabajo."},
+        {t:"op", p:"¿Cuál es el tono general del texto?", o:["Nostálgico y cálido","Tenso y de miedo","Burlón"], r:0, ex:"Recuerda el pasado con cariño: la abuela, el delantal, el circo de su infancia. Eso es nostalgia."},
+        {t:"txt", p:"Las manos del señor estaban \"llenas de callos\". Eso indica que era alguien que trabajaba mucho con las… Escribe la palabra.", r:["manos"], ex:"Los callos salen de trabajar con las manos. El detalle nos dice que es un trabajador manual, sin decirlo directamente."}
+      ]},
+    { titulo:"Dos textos, un mismo tema", intro:"Cuando dos textos hablan de lo mismo pero no dicen lo mismo, comparar es la manera de entender de verdad.",
+      puntos:["Un texto informativo da datos; uno de opinión defiende una postura.","Comparar es buscar en qué coinciden y en qué se separan dos textos.","El argumento es la razón que alguien da para sostener su idea.","Que dos fuentes se contradigan no significa que una mienta: pueden mirar cosas distintas."],
+      dato:"Al comparar fuentes, la pregunta más útil no es \"¿quién tiene razón?\", sino \"¿qué información tiene cada uno que al otro le falta?\".",
+      lectura:{ titulo:"Dos voces sobre el circo", texto:"TEXTO A (nota informativa). En 2015 entró en vigor en México una reforma que prohíbe el uso de animales silvestres en circos. Según la Asociación Nacional de Empresarios de Circo, la medida afectó a cerca de 50 compañías. Desde entonces, varios circos cambiaron su espectáculo por números de acrobacia, teatro y luces.\n\nTEXTO B (columna de opinión). Me alegra que ya no haya tigres en las carpas, pero me preocupa que hayamos confundido dos cosas. El problema nunca fue el circo: fueron las jaulas. Un circo sin animales sigue siendo circo, y las familias que llevan cinco generaciones en el oficio merecen apoyo para reinventarse, no que las tratemos como si fueran el enemigo." },
+      ejercicios:[
+        {t:"op", p:"¿Cuál de los dos textos es informativo?", o:["El texto B","El texto A","Los dos"], r:1, ex:"El A da fechas, leyes y cifras de una asociación. El B dice \"me alegra\" y \"me preocupa\": es opinión."},
+        {t:"op", p:"¿En qué coinciden los dos textos?", o:["En que la ley fue un error","En que los circos desaparecieron","En que ya no hay animales silvestres en los circos mexicanos"], r:2, ex:"Los dos parten del mismo hecho: la prohibición existe y se aplicó. Difieren en lo que opinan sobre sus efectos."},
+        {t:"op", p:"¿Cuál es el argumento central del texto B?", o:["Que el problema eran las jaulas, no el circo, y las familias circenses merecen apoyo","Que hay que devolver los animales a los circos","Que la acrobacia es aburrida"], r:0, ex:"Lo dice casi textual: separa \"el circo\" de \"las jaulas\" y pide apoyo para reinventarse."},
+        {t:"vf", p:"El texto B está en contra de la prohibición de animales silvestres.", r:false, ex:"Falso. Empieza diciendo \"me alegra que ya no haya tigres\". Su preocupación es otra: cómo se trató a las familias circenses."},
+        {t:"op", p:"¿Qué dato aporta el texto A que al B le falta?", o:["Una opinión sobre las jaulas","Una cifra de cuántas compañías se vieron afectadas","Una historia familiar"], r:1, ex:"El A trae el número (cerca de 50 compañías) y la fecha. El B no da cifras: da postura."}
+      ]}
+  ]
+  }
+}
+];
+
+</script>
+<script>
+window.DATOS_B = [
+  {
+    id:'cien',
+    nombre:'Ciencias Naturales',
+    icono:'🌱',
+    desc:'Descubre cómo funciona tu cuerpo, los animales y las fuerzas que mueven el mundo.',
+    niveles:{
+      semillas:[
+        {
+          titulo:'Mi cuerpo se mueve',
+          intro:'Tu cuerpo es tu mejor juguete. Con él saltas, giras y bailas.',
+          puntos:[
+            'Los huesos son duros y sostienen tu cuerpo, como los postes sostienen la carpa.',
+            'Los músculos jalan a los huesos para que te muevas.',
+            'Las articulaciones, como el codo y la rodilla, doblan tu cuerpo.',
+            'Cuando corres, tu corazón late más rápido.'
+          ],
+          dato:'Tu hueso más pequeño está dentro de tu oído y es del tamaño de un grano de arroz.',
+          lectura:null,
+          ejercicios:[
+            {t:'op', p:'¿Con qué parte doblas la pierna?', emoji:'🦵', o:['El codo','La rodilla','El hombro'], r:1, ex:'La rodilla es la articulación que dobla la pierna. El codo dobla el brazo y el hombro mueve todo el brazo.'},
+            {t:'op', p:'¿Qué late rápido cuando corres?', emoji:'❤️', o:['Los pulmones','El estómago','El corazón'], r:2, ex:'El corazón late para mandar sangre a tus músculos. Los pulmones no laten: se llenan de aire.'},
+            {t:'vf', p:'Los huesos son duros.', r:true, ex:'Sí. Los huesos son duros y por eso te mantienen de pie.'},
+            {t:'vf', p:'Los músculos sirven para ver.', r:false, ex:'Los músculos sirven para moverte. Para ver usas los ojos.'},
+            {t:'op', p:'¿Qué juntas para aplaudir?', emoji:'👏', o:['Las manos','Los pies','Los codos'], r:0, ex:'Aplaudes juntando tus dos manos, una contra la otra.'}
+          ]
+        },
+        {
+          titulo:'Los animales y lo que comen',
+          intro:'No todos los animales comen lo mismo. Vamos a ver qué le gusta a cada uno.',
+          puntos:[
+            'Unos animales comen plantas: el conejo come zanahoria.',
+            'Otros comen carne: el león caza para comer.',
+            'Algunos comen de todo, como el cerdo y como tú.',
+            'Todos los animales necesitan agua.'
+          ],
+          dato:'El elefante come casi todo el día porque su cuerpo es muy grande.',
+          lectura:null,
+          ejercicios:[
+            {t:'op', p:'¿Qué come el conejo?', emoji:'🐰', o:['Carne','Zanahorias','Pescado'], r:1, ex:'El conejo come plantas, como la zanahoria. A eso se le dice herbívoro.'},
+            {t:'op', p:'¿Cuál de estos come carne?', emoji:'🦁', o:['La vaca','La oveja','El león'], r:2, ex:'El león caza otros animales, por eso es carnívoro. La vaca y la oveja comen pasto.'},
+            {t:'vf', p:'Todos los animales necesitan agua.', r:true, ex:'Sí. Sin agua ningún animal puede vivir.'},
+            {t:'vf', p:'Las vacas comen carne.', r:false, ex:'Las vacas comen pasto y otras plantas. Son herbívoras.'},
+            {t:'op', p:'¿Qué come el elefante?', emoji:'🐘', o:['Hojas y ramas','Ratones','Peces'], r:0, ex:'El elefante come hojas, ramas y frutas. Es herbívoro: no caza a otros animales.'}
+          ]
+        }
+      ],
+      malabaristas:[
+        {
+          titulo:'Los sentidos y el equilibrio',
+          intro:'Tienes cinco sentidos para conocer el mundo, y un truco escondido dentro de tu oído.',
+          puntos:[
+            'Los cinco sentidos son vista, oído, olfato, gusto y tacto.',
+            'Cada sentido tiene su órgano: ojos, oídos, nariz, lengua y piel.',
+            'Dentro del oído hay unos tubitos con líquido llamados canales semicirculares.',
+            'Cuando ese líquido se mueve, le avisa a tu cerebro si estás derecho o de lado.',
+            'Por eso te mareas al dar muchas vueltas: el líquido sigue girando aunque tú ya paraste.'
+          ],
+          dato:'Los equilibristas fijan la vista en un punto que no se mueve, así ayudan a su oído a no confundirse.',
+          lectura:null,
+          ejercicios:[
+            {t:'txt', p:'¿Cuántos sentidos tienes? Escribe el número.', r:['5','cinco'], ex:'Son cinco: vista, oído, olfato, gusto y tacto.'},
+            {t:'op', p:'¿Dónde está el órgano del equilibrio?', o:['En los ojos','En el oído','En las piernas'], r:1, ex:'Dentro del oído están los canales semicirculares, que le avisan al cerebro en qué posición estás. Los ojos ayudan, pero el órgano está en el oído.'},
+            {t:'txt', p:'¿Con qué órgano saboreas la comida?', r:['lengua','la lengua'], ex:'La lengua tiene papilas que detectan los sabores.'},
+            {t:'vf', p:'Te mareas al girar porque el líquido de tu oído sigue moviéndose.', r:true, ex:'Al parar, el líquido sigue girando un ratito y tu cerebro cree que todavía das vueltas.'},
+            {t:'op', p:'¿Qué sentido te avisa que la arena está caliente?', o:['La vista','El olfato','El tacto'], r:2, ex:'La piel siente el calor y la textura, y ese sentido es el tacto. Con la vista solo ves el color de la arena.'}
+          ]
+        },
+        {
+          titulo:'Los estados de la materia',
+          intro:'El agua puede ser dura como piedra, correr en un vaso o volar como vapor. Es la misma agua.',
+          puntos:[
+            'La materia se presenta en tres estados comunes: sólido, líquido y gas.',
+            'Un sólido tiene forma propia, como un cubo de hielo.',
+            'Un líquido toma la forma del recipiente, como el agua en un vaso.',
+            'Un gas se esparce y llena todo el espacio, como el aire dentro de un globo.',
+            'El calor cambia el estado: el hielo se derrite y el agua hierve.'
+          ],
+          dato:'A nivel del mar el agua se congela a 0 grados y hierve a 100 grados centígrados.',
+          lectura:null,
+          ejercicios:[
+            {t:'op', p:'¿En qué estado está el agua de un vaso?', o:['Sólido','Líquido','Gas'], r:1, ex:'Toma la forma del vaso y se puede servir, así que está líquida. Sólida sería un hielo.'},
+            {t:'txt', p:'¿Cómo se llama el agua en estado sólido?', r:['hielo','el hielo'], ex:'Cuando el agua se enfría hasta 0 grados se convierte en hielo.'},
+            {t:'num', p:'¿A cuántos grados hierve el agua a nivel del mar? Escribe la cifra.', r:100, ex:'A 100 grados centígrados el agua líquida se convierte en vapor.'},
+            {t:'vf', p:'Un gas siempre conserva la misma forma.', r:false, ex:'El gas no tiene forma propia: se esparce hasta llenar todo el recipiente.'},
+            {t:'op', p:'¿Qué le pasa a un hielo si lo dejas al sol?', o:['Se derrite y se vuelve agua','Se pone todavía más duro','Se convierte en vapor sin volverse agua'], r:0, ex:'El calor lo derrite: pasa de sólido a líquido. Solo después, con más calor, el agua puede hacerse vapor.'}
+          ]
+        }
+      ],
+      acrobatas:[
+        {
+          titulo:'Fuerzas, gravedad y centro de gravedad',
+          intro:'Nadie se cae por mala suerte. Se cae por física, y la física se puede entender.',
+          puntos:[
+            'Una fuerza es un jalón o un empujón que cambia el movimiento de algo.',
+            'La gravedad es la fuerza con la que la Tierra jala hacia abajo todo lo que tiene masa.',
+            'El centro de gravedad es el punto donde se concentra el peso de un cuerpo.',
+            'Te mantienes de pie mientras tu centro de gravedad quede sobre tu base de apoyo.',
+            'Entre más bajo esté el centro de gravedad y más ancha sea la base, más estable estás.'
+          ],
+          dato:'La pértiga del equilibrista es larga y pesada en las puntas: eso hace que gire más despacio y le da tiempo de corregir.',
+          lectura:null,
+          ejercicios:[
+            {t:'op', p:'¿Por qué un equilibrista abre los brazos sobre la cuerda?', o:['Porque así pesa menos sobre la cuerda','Para controlar dónde queda su centro de gravedad','Para que el público lo vea mejor'], r:1, ex:'Su peso no cambia por abrir los brazos. Lo que hace es mover el centro de gravedad y mantenerlo justo arriba de la cuerda.'},
+            {t:'op', p:'¿Cuál pirámide humana es más estable?', o:['La de base ancha y poca altura','La de base angosta y mucha altura','Las dos igual, si pesan lo mismo'], r:0, ex:'El peso total no decide la estabilidad. Una base ancha y un centro de gravedad bajo hacen mucho más difícil que se venga abajo.'},
+            {t:'vf', p:'En el vacío, una pluma y una piedra caen al mismo tiempo.', r:true, ex:'Sin aire que la frene, la gravedad acelera igual a todo. En el aire la pluma cae lento por el rozamiento.'},
+            {t:'txt', p:'¿Cómo se llama la fuerza que jala los objetos hacia la Tierra?', r:['gravedad','la gravedad'], ex:'La gravedad es la atracción que la Tierra ejerce sobre todo lo que tiene masa.'},
+            {t:'op', p:'Un trapecista suelta la barra en el punto más alto del vuelo. ¿Qué pasa?', o:['Cae en línea recta hacia abajo','Avanza un instante más y luego cae','Se queda un momento detenido en el aire'], r:1, ex:'Conserva la velocidad que traía, así que sigue avanzando hacia adelante mientras la gravedad lo hace bajar.'}
+          ]
+        },
+        {
+          titulo:'Los sistemas del cuerpo humano',
+          intro:'Tu cuerpo es una compañía completa: cada equipo de órganos tiene su número en la función.',
+          puntos:[
+            'Varios órganos que trabajan juntos forman un sistema o aparato.',
+            'El sistema circulatorio reparte la sangre: el corazón bombea y las arterias y venas la llevan.',
+            'El sistema respiratorio toma oxígeno del aire con los pulmones y saca dióxido de carbono.',
+            'El sistema digestivo deshace los alimentos para aprovechar sus nutrientes.',
+            'Huesos y músculos trabajan juntos para sostenerte y moverte.'
+          ],
+          dato:'Un adulto tiene 206 huesos, pero un recién nacido tiene cerca de 300: al crecer, varios se van uniendo.',
+          lectura:null,
+          ejercicios:[
+            {t:'op', p:'¿Qué órgano bombea la sangre?', o:['Los pulmones','El hígado','El corazón'], r:2, ex:'El corazón es un músculo que se aprieta y empuja la sangre. Los pulmones le meten oxígeno a esa sangre, pero no la bombean.'},
+            {t:'num', p:'¿Cuántos huesos tiene el esqueleto de un adulto? Escribe la cifra.', r:206, ex:'Son 206 en un adulto. De bebé son más y con los años varios se unen.'},
+            {t:'txt', p:'¿Qué gas tomas del aire al respirar?', r:['oxigeno','oxígeno','el oxigeno'], ex:'Los pulmones pasan el oxígeno del aire a la sangre para repartirlo por el cuerpo.'},
+            {t:'vf', p:'Cuando haces un esfuerzo fuerte, tu respiración se vuelve más lenta.', r:false, ex:'Pasa lo contrario: se acelera, porque los músculos gastan más oxígeno y hay que reponerlo rápido.'},
+            {t:'op', p:'¿Qué sistema se encarga de deshacer la comida?', o:['El digestivo','El circulatorio','El respiratorio'], r:0, ex:'El sistema digestivo rompe los alimentos. El circulatorio solo reparte después los nutrientes por la sangre.'}
+          ]
+        }
+      ]
+    }
+  },
+  {
+    id:'geo',
+    nombre:'Geografía',
+    icono:'🗺️',
+    desc:'Aprende dónde estás parado, cómo se lee un mapa y cómo es el mundo por el que viaja el circo.',
+    niveles:{
+      semillas:[
+        {
+          titulo:'Dónde vivo',
+          intro:'Tu casa está en una calle, y tu calle está en una ciudad. Vamos a buscarte en el mapa.',
+          puntos:[
+            'Tu casa tiene una dirección con nombre de calle y número.',
+            'Muchas casas juntas forman una colonia o un barrio.',
+            'Muchas colonias juntas forman una ciudad o un pueblo.',
+            'Tu ciudad está en un país, y nuestro país se llama México.'
+          ],
+          dato:'Cuando el circo viaja, la carpa es la casa que se lleva a todos lados.',
+          lectura:null,
+          ejercicios:[
+            {t:'op', p:'¿Cómo se llama nuestro país?', emoji:'🇲🇽', o:['México','América','Guadalajara'], r:0, ex:'Nuestro país es México. América es el continente donde está, y Guadalajara es una de sus ciudades.'},
+            {t:'op', p:'¿Qué tiene tu casa para poder encontrarla?', emoji:'🏠', o:['Una llave','Una dirección','Un timbre'], r:1, ex:'La dirección dice el nombre de la calle y el número. La llave la abre y el timbre la anuncia, pero solo la dirección sirve para decirle a alguien dónde está.'},
+            {t:'vf', p:'Muchas colonias juntas forman una ciudad.', r:true, ex:'Sí. Primero las casas hacen una colonia, y muchas colonias juntas hacen la ciudad.'},
+            {t:'vf', p:'La carpa del circo se queda siempre en el mismo lugar.', r:false, ex:'La carpa se arma y se desarma para viajar a otra ciudad.'},
+            {t:'op', p:'¿Dónde está tu calle?', emoji:'🛣️', o:['Dentro de tu casa','En tu ciudad','En otro país'], r:1, ex:'Tu calle está dentro de tu ciudad o de tu pueblo. Tu casa está dentro de la calle, no al revés.'}
+          ]
+        },
+        {
+          titulo:'El clima y el cielo',
+          intro:'Mira hacia arriba. El cielo te avisa si hoy toca sol, lluvia o viento.',
+          puntos:[
+            'Cuando hay sol, el día está soleado y hace calor.',
+            'Cuando hay nubes grises, puede llover.',
+            'En invierno hace frío y te pones suéter.',
+            'El viento es aire que se mueve: mueve las hojas y también la lona de la carpa.'
+          ],
+          dato:'El arcoíris sale cuando el sol brilla mientras todavía está lloviendo.',
+          lectura:null,
+          ejercicios:[
+            {t:'op', p:'¿Qué usas cuando llueve?', emoji:'☂️', o:['Un paraguas','Un sombrero de sol','Unos lentes oscuros'], r:0, ex:'El paraguas te tapa del agua. El sombrero y los lentes son para el sol.'},
+            {t:'op', p:'¿Qué ves en el cielo de día?', emoji:'☀️', o:['Las estrellas','La oscuridad','El sol'], r:2, ex:'De día vemos el sol. Las estrellas están ahí, pero la luz del sol no deja verlas. La oscuridad es de noche.'},
+            {t:'vf', p:'En invierno hace frío.', r:true, ex:'En invierno baja la temperatura y por eso te abrigas.'},
+            {t:'vf', p:'Las nubes grises quieren decir que va a hacer mucho calor.', r:false, ex:'Las nubes grises están cargadas de agua: avisan que puede llover.'},
+            {t:'op', p:'¿Qué cosas mueve el viento?', emoji:'🍃', o:['Las hojas de los árboles','Las banquetas','Los postes de luz'], r:0, ex:'El viento empuja las cosas ligeras, como las hojas. Lo pesado y bien clavado no se mueve.'}
+          ]
+        }
+      ],
+      malabaristas:[
+        {
+          titulo:'México y sus estados',
+          intro:'El circo va de gira por todo el país. Para no perderte, primero hay que conocerlo.',
+          puntos:[
+            'México está en América del Norte y su capital es la Ciudad de México.',
+            'El país se divide en 32 entidades: 31 estados y la Ciudad de México.',
+            'Al norte hacemos frontera con Estados Unidos; al sur, con Guatemala y Belice.',
+            'Al oeste está el océano Pacífico y al este el golfo de México.',
+            'Cada estado tiene su capital, su comida y sus fiestas.'
+          ],
+          dato:'La montaña más alta de México es el Pico de Orizaba, un volcán de más de 5600 metros de altura.',
+          lectura:null,
+          ejercicios:[
+            {t:'num', p:'¿Cuántos estados tiene México, sin contar la Ciudad de México? Escribe la cifra.', r:31, ex:'Son 31 estados más la Ciudad de México, o sea 32 entidades en total.'},
+            {t:'txt', p:'¿Cuál es la capital de México?', r:['ciudad de mexico','ciudad de méxico','cdmx'], ex:'La capital es la Ciudad de México, donde están los poderes del país.'},
+            {t:'op', p:'¿Con qué país hace frontera México al norte?', o:['Guatemala','Belice','Estados Unidos'], r:2, ex:'Al norte está Estados Unidos. Guatemala y Belice también son vecinos, pero quedan al sur.'},
+            {t:'vf', p:'México está en el continente americano.', r:true, ex:'Sí, en la parte norte de América.'},
+            {t:'op', p:'Si el circo va de Yucatán a Baja California, ¿hacia dónde viaja?', o:['Hacia el sureste','Hacia el noroeste','Hacia el este'], r:1, ex:'Yucatán ya está en el sureste y Baja California está en el noroeste, así que el viaje cruza el país en diagonal hacia allá.'}
+          ]
+        },
+        {
+          titulo:'Continentes y océanos',
+          intro:'La Tierra es una pelota de agua y tierra. Vamos a ponerle nombre a cada pedazo.',
+          puntos:[
+            'Los grandes bloques de tierra se llaman continentes: América, Europa, Asia, África, Oceanía y la Antártida.',
+            'Hay cinco océanos: Pacífico, Atlántico, Índico, Ártico y Antártico.',
+            'El océano Pacífico es el más grande de todos.',
+            'Asia es el continente más grande y donde vive más gente.',
+            'Casi tres cuartas partes de la superficie de la Tierra están cubiertas de agua.'
+          ],
+          dato:'En la Antártida no vive nadie de forma permanente: solo científicos que se quedan por temporadas.',
+          lectura:null,
+          ejercicios:[
+            {t:'txt', p:'¿Cuántos océanos hay? Escribe el número.', r:['5','cinco'], ex:'Cinco: Pacífico, Atlántico, Índico, Ártico y Antártico.'},
+            {t:'op', p:'¿Cuál es el océano más grande?', o:['El Atlántico','El Índico','El Pacífico'], r:2, ex:'El Pacífico es el más grande y el más profundo. El Atlántico, que separa América de Europa, es el segundo.'},
+            {t:'txt', p:'¿En qué continente está México?', r:['america','américa'], ex:'México está en América, entre Estados Unidos y Guatemala.'},
+            {t:'vf', p:'La Antártida es el continente más caluroso.', r:false, ex:'Es el más frío: está cubierto de hielo casi todo el año.'},
+            {t:'op', p:'Para ir de México a Europa en barco, ¿qué océano tienes que cruzar?', o:['El Pacífico','El Atlántico','El Ártico'], r:1, ex:'Europa queda al este de México, al otro lado del Atlántico. El Pacífico está del lado contrario.'}
+          ]
+        }
+      ],
+      acrobatas:[
+        {
+          titulo:'Mapas, coordenadas y husos horarios',
+          intro:'Con dos números puedes decir exactamente en qué punto del planeta está la carpa esta noche.',
+          puntos:[
+            'Un mapa es una representación del terreno visto desde arriba y hecha a escala.',
+            'Las líneas horizontales son los paralelos; el más importante es el ecuador, a 0 grados de latitud.',
+            'Las líneas verticales son los meridianos; el de Greenwich marca 0 grados de longitud.',
+            'Con la latitud y la longitud puedes ubicar cualquier punto del planeta.',
+            'La Tierra se divide en 24 husos horarios porque tarda 24 horas en dar una vuelta sobre sí misma.'
+          ],
+          dato:'Cada huso horario mide 15 grados de longitud, porque 360 grados entre 24 horas dan 15 grados por hora.',
+          lectura:null,
+          ejercicios:[
+            {t:'num', p:'¿En cuántos husos horarios se divide la Tierra? Escribe la cifra.', r:24, ex:'Uno por cada hora, porque la Tierra da una vuelta completa sobre su eje en 24 horas.'},
+            {t:'op', p:'¿Qué mide la latitud?', o:['La distancia al este o al oeste de Greenwich','La altura sobre el nivel del mar','La distancia al norte o al sur del ecuador'], r:2, ex:'La latitud se cuenta desde el ecuador hacia los polos, de 0 a 90 grados. La distancia a Greenwich es la longitud.'},
+            {t:'txt', p:'¿Cómo se llama el paralelo que está a 0 grados de latitud?', r:['ecuador','el ecuador'], ex:'El ecuador divide la Tierra en hemisferio norte y hemisferio sur.'},
+            {t:'vf', p:'La escala de un mapa sirve para saber cuánto mide en la realidad una distancia dibujada.', r:true, ex:'Si la escala dice 1:100000, un centímetro del mapa equivale a un kilómetro real.'},
+            {t:'op', p:'El circo sale de México y viaja al este cruzando varios husos horarios. ¿Qué pasa con la hora?', o:['Hay que adelantar el reloj','Hay que atrasar el reloj','La hora no cambia, solo la fecha'], r:0, ex:'Al ir hacia el este te acercas a donde el sol sale antes, así que el reloj se adelanta. Hacia el oeste se atrasa.'}
+          ]
+        },
+        {
+          titulo:'Relieve, ríos y climas del mundo',
+          intro:'El mismo planeta tiene desiertos, selvas y hielo. Aquí está la explicación.',
+          puntos:[
+            'El relieve son las formas del terreno: montañas, mesetas, valles y llanuras.',
+            'Las grandes cordilleras se levantan donde chocan las placas de la corteza terrestre.',
+            'Un río nace en una zona alta y corre hasta desembocar en un lago o en el mar.',
+            'El clima de un lugar depende de su latitud, su altitud y su cercanía al mar.',
+            'Entre más alto vives, más frío hace, aunque estés cerca del ecuador.'
+          ],
+          dato:'El Everest, en Asia, mide 8849 metros: es la montaña más alta del mundo.',
+          lectura:null,
+          ejercicios:[
+            {t:'op', p:'¿Por qué hace más frío en lo alto de una montaña?', o:['Porque el aire es más delgado y retiene menos calor','Porque estás más lejos del Sol','Porque arriba siempre hay nieve'], r:0, ex:'Subir unos kilómetros no te acerca ni te aleja del Sol de manera importante. Lo que cambia es el aire: se vuelve menos denso y guarda menos calor.'},
+            {t:'txt', p:'¿Cómo se llama el conjunto de formas del terreno, como montañas y valles?', r:['relieve','el relieve'], ex:'El relieve es el conjunto de formas de la superficie terrestre.'},
+            {t:'num', p:'Una montaña mide 5600 metros y otra 8800. ¿Cuántos metros más mide la segunda? Escribe la cifra.', r:3200, ex:'8800 menos 5600 son 3200 metros de diferencia.'},
+            {t:'vf', p:'Todos los lugares cercanos al ecuador son calurosos, sin importar su altura.', r:false, ex:'La altitud también cuenta: hay ciudades cerca del ecuador, en lo alto de los Andes, donde hace frío todo el año.'},
+            {t:'op', p:'¿Qué es un delta?', o:['El valle que un río excava entre dos montañas','El lugar alto donde nace un río','El terreno que forma un río con la tierra que arrastra al desembocar'], r:2, ex:'El delta se forma en la desembocadura, con la arena y el lodo que el río deja al llegar al mar. Donde nace se llama nacimiento.'}
+          ]
+        }
+      ]
+    }
+  },
+  {
+    id:'hist',
+    nombre:'Historia',
+    icono:'⏳',
+    desc:'Viaja al pasado: cómo vivía la gente antes, cómo nació México y cómo nació el circo.',
+    niveles:{
+      semillas:[
+        {
+          titulo:'Antes y ahora',
+          intro:'Las cosas cambian con el tiempo. Vamos a ver cómo era antes y cómo es hoy.',
+          puntos:[
+            'Antes es lo que ya pasó. Ahora es lo que está pasando.',
+            'Antes no había televisión ni teléfonos como los de hoy.',
+            'Antes la gente viajaba en carreta con caballos. Hoy usamos carros.',
+            'Las fotos viejas nos enseñan cómo era antes.'
+          ],
+          dato:'Hace mucho tiempo, el circo viajaba en carretas jaladas por caballos.',
+          lectura:null,
+          ejercicios:[
+            {t:'op', p:'¿Qué usamos hoy para viajar muy lejos y rápido?', emoji:'✈️', o:['La carreta','El avión','El caballo'], r:1, ex:'El avión nos lleva muy lejos en pocas horas. La carreta y el caballo son de antes y van mucho más despacio.'},
+            {t:'vf', p:'Antes la gente viajaba en avión de un pueblo a otro.', r:false, ex:'El avión es nuevo. Antes se viajaba en carreta jalada por caballos.'},
+            {t:'op', p:'¿Qué nos enseña cómo era antes?', emoji:'📷', o:['Las fotos viejas','La tele de hoy','El periódico de hoy'], r:0, ex:'En las fotos viejas vemos la ropa, las casas y las calles de antes. Lo de hoy nos enseña cómo es ahora.'},
+            {t:'vf', p:'Tú eras más chiquito antes que ahora.', r:true, ex:'Todos crecemos. Antes eras bebé y hoy eres más grande.'},
+            {t:'op', p:'¿Con qué jalaban las carretas del circo hace mucho?', emoji:'🐴', o:['Con un camión','Con un tractor','Con caballos'], r:2, ex:'Los camiones y los tractores no existían todavía. Las carretas las jalaban los caballos.'}
+          ]
+        },
+        {
+          titulo:'Mi familia y el tiempo',
+          intro:'En tu familia hay gente que nació antes que tú. Ellos vieron cosas que tú no.',
+          puntos:[
+            'Tus papás nacieron antes que tú.',
+            'Tus abuelos nacieron antes que tus papás.',
+            'Cada año cumples años una vez, el día en que naciste.',
+            'Los recuerdos de la familia se guardan en fotos y en cuentos.'
+          ],
+          dato:'Si juntas a tus abuelos, a tus papás y a ti, ya tienes tres generaciones de familia.',
+          lectura:null,
+          ejercicios:[
+            {t:'op', p:'¿Quién nació primero?', emoji:'👵', o:['Tú','Tu mamá','Tu abuela'], r:2, ex:'La abuela nació antes que tu mamá, y tu mamá antes que tú. Los abuelos son los primeros de la familia.'},
+            {t:'vf', p:'Tus papás son más grandes que tú.', r:true, ex:'Tus papás nacieron antes, por eso tienen más años.'},
+            {t:'op', p:'¿Cuántas veces al año cumples años?', emoji:'🎂', o:['Una','Dos','Doce'], r:0, ex:'Cumples años una sola vez al año, el día en que naciste. Doce son los meses del año.'},
+            {t:'vf', p:'Los abuelos son más chicos que los nietos.', r:false, ex:'Al revés: los abuelos nacieron mucho antes, así que son los más grandes.'},
+            {t:'op', p:'¿Dónde se guardan los recuerdos de tu familia?', emoji:'📸', o:['En las fotos','En el mapa','En el reloj'], r:0, ex:'Las fotos guardan momentos que ya pasaron. El mapa dice dónde están los lugares y el reloj dice la hora de hoy.'}
+          ]
+        }
+      ],
+      malabaristas:[
+        {
+          titulo:'Culturas antiguas de México',
+          intro:'Mucho antes de que existiera México, aquí ya había ciudades enormes con pirámides.',
+          puntos:[
+            'Antes de la llegada de los españoles, en este territorio vivían muchos pueblos con ciudades y templos.',
+            'Los olmecas son de los más antiguos: tallaron cabezas gigantes de piedra.',
+            'Los mayas construyeron ciudades como Chichén Itzá y estudiaron el cielo.',
+            'Los mexicas fundaron Tenochtitlan sobre una isla del lago de Texcoco.',
+            'En Teotihuacán están las pirámides del Sol y de la Luna.'
+          ],
+          dato:'Los mayas ya escribían un símbolo para el cero cuando en muchas partes del mundo ese número todavía no se usaba.',
+          lectura:null,
+          ejercicios:[
+            {t:'op', p:'¿Quiénes tallaron las cabezas colosales de piedra?', o:['Los mayas','Los olmecas','Los mexicas'], r:1, ex:'Fueron los olmecas, que vivieron en la costa del Golfo y son de los pueblos más antiguos de la región.'},
+            {t:'txt', p:'¿Cómo se llamaba la ciudad de los mexicas construida sobre un lago?', r:['tenochtitlan','tenochtitlán','mexico-tenochtitlan'], ex:'Tenochtitlan se levantó sobre una isla del lago de Texcoco. Hoy ahí está la Ciudad de México.'},
+            {t:'vf', p:'Los mayas observaban el cielo y hacían calendarios.', r:true, ex:'Estudiaban el Sol, la Luna y las estrellas para medir el tiempo y organizar sus fiestas.'},
+            {t:'op', p:'¿Qué hay en Teotihuacán?', o:['Las pirámides del Sol y de la Luna','El Templo Mayor de los mexicas','La pirámide de Chichén Itzá'], r:0, ex:'Teotihuacán es famosa por esas dos pirámides. El Templo Mayor estaba en Tenochtitlan y Chichén Itzá es maya, en Yucatán.'},
+            {t:'txt', p:'Los mayas escribían un símbolo para un número que vale nada. ¿Cuál es? Escribe el número.', r:['0','cero'], ex:'El cero. Tenían un símbolo para escribirlo hace más de mil años.'}
+          ]
+        },
+        {
+          titulo:'La Independencia',
+          intro:'Hubo un tiempo en que México no era México y no se mandaba solo. Así cambió eso.',
+          puntos:[
+            'Hace más de doscientos años, este territorio era una colonia de España y se llamaba Nueva España.',
+            'La madrugada del 16 de septiembre de 1810, el cura Miguel Hidalgo llamó a la gente a luchar en el pueblo de Dolores.',
+            'A ese llamado se le conoce como el Grito de Dolores.',
+            'Después continuaron la lucha José María Morelos y otros insurgentes.',
+            'La guerra terminó en 1821 y México se volvió un país independiente.'
+          ],
+          dato:'Cada 15 de septiembre por la noche se recuerda el Grito, y el 16 se celebra el Día de la Independencia.',
+          lectura:null,
+          ejercicios:[
+            {t:'num', p:'¿En qué año comenzó la guerra de Independencia de México? Escribe la cifra.', r:1810, ex:'Comenzó el 16 de septiembre de 1810 con el Grito de Dolores.'},
+            {t:'op', p:'¿Quién dio el Grito de Dolores?', o:['José María Morelos','Benito Juárez','Miguel Hidalgo'], r:2, ex:'Fue el cura Miguel Hidalgo. Morelos siguió la lucha después de él, y Juárez vivió muchos años más tarde.'},
+            {t:'txt', p:'¿De qué país se independizó México?', r:['espana','españa'], ex:'México dejó de ser colonia de España y pasó a gobernarse solo.'},
+            {t:'vf', p:'La Independencia se logró en un solo día.', r:false, ex:'La guerra duró once años: empezó en 1810 y terminó en 1821.'},
+            {t:'op', p:'¿Cómo se llamaba este territorio cuando era colonia?', o:['Gran Tenochtitlan','Nueva España','Virreinato de América'], r:1, ex:'Se llamaba Nueva España y lo gobernaba un virrey en nombre del rey español.'}
+          ]
+        }
+      ],
+      acrobatas:[
+        {
+          titulo:'La Revolución Mexicana',
+          intro:'Un país entero se levantó porque la tierra y el poder estaban en muy pocas manos.',
+          puntos:[
+            'Porfirio Díaz gobernó México más de treinta años, reeligiéndose una y otra vez.',
+            'Había mucha desigualdad: unas cuantas familias tenían enormes haciendas y la mayoría de los campesinos no tenía tierra propia.',
+            'En 1910, Francisco I. Madero llamó a levantarse contra la reelección, y el 20 de noviembre inició la Revolución.',
+            'Emiliano Zapata luchó en el sur bajo el lema Tierra y Libertad, que venía de los magonistas; Francisco Villa dirigió tropas en el norte.',
+            'En 1917 se promulgó una nueva Constitución, la que sigue vigente hoy.'
+          ],
+          dato:'La Constitución de 1917 fue de las primeras del mundo en escribir derechos de los trabajadores, como la jornada de ocho horas.',
+          lectura:null,
+          ejercicios:[
+            {t:'num', p:'¿En qué año inició la Revolución Mexicana? Escribe la cifra.', r:1910, ex:'El 20 de noviembre de 1910, tras el llamado de Francisco I. Madero.'},
+            {t:'op', p:'¿Cuál fue una de las causas principales de la Revolución?', o:['La desigualdad en el reparto de la tierra','La invasión de un ejército extranjero','La falta de ferrocarriles en el país'], r:0, ex:'Pocos dueños concentraban enormes haciendas mientras los campesinos trabajaban sin tierra propia. Ferrocarriles sí se construyeron durante el porfiriato.'},
+            {t:'txt', p:'¿Qué lema hizo suyo Emiliano Zapata?', r:['tierra y libertad'], ex:'Tierra y Libertad. El lema nació entre los magonistas, del Partido Liberal Mexicano de Ricardo Flores Magón, y el zapatismo lo adoptó para exigir que la tierra fuera de quien la trabaja.'},
+            {t:'vf', p:'Porfirio Díaz siguió gobernando México después de 1911.', r:false, ex:'Díaz renunció en 1911 y salió del país. Poco después Madero llegó a la presidencia.'},
+            {t:'op', p:'¿Qué documento importante salió de la Revolución?', o:['La Constitución de 1857','La Constitución de 1917','El Plan de Iguala'], r:1, ex:'La Constitución de 1917 recogió las demandas de tierra, trabajo y educación. La de 1857 es anterior y el Plan de Iguala es de la Independencia.'}
+          ]
+        },
+        {
+          titulo:'Historia del circo en el mundo',
+          intro:'La pista redonda en la que trabajas tiene más de doscientos años de historia.',
+          puntos:[
+            'En 1768, en Londres, Philip Astley presentó acrobacias a caballo dentro de una pista circular: ese es el origen del circo moderno.',
+            'La pista es redonda para que el caballo galope en curva sin parar y el jinete se recargue hacia adentro sin caerse.',
+            'En el siglo XIX el circo empezó a usar carpas de lona, y así pudo viajar de pueblo en pueblo.',
+            'Con los años se sumaron trapecistas, malabaristas, equilibristas y payasos.',
+            'En México, el Circo Atayde Hermanos se fundó en 1888 y es uno de los más antiguos que siguen activos.'
+          ],
+          dato:'Hoy muchos circos ya no presentan animales salvajes y se concentran en las habilidades de sus artistas.',
+          lectura:null,
+          ejercicios:[
+            {t:'num', p:'¿En qué año se considera que nació el circo moderno? Escribe la cifra.', r:1768, ex:'En 1768 Philip Astley montó en Londres la primera pista circular con acrobacias a caballo.'},
+            {t:'op', p:'¿Por qué la pista del circo es redonda?', o:['Porque así cabe más público sentado','Porque la lona se sostiene mejor en círculo','Para que el caballo galope en curva continua y el jinete se recargue hacia adentro'], r:2, ex:'La forma circular nació por los caballos: pueden correr sin detenerse y el jinete se inclina hacia el centro para no salir despedido.'},
+            {t:'txt', p:'¿Cómo se llama la tienda grande de lona donde se hace la función?', r:['carpa','la carpa'], ex:'La carpa permitió que el circo armara su teatro en cualquier terreno y luego se lo llevara.'},
+            {t:'vf', p:'El circo moderno nació en México.', r:false, ex:'Nació en Inglaterra en 1768. A México llegó después y aquí crecieron compañías propias, como el Circo Atayde.'},
+            {t:'op', p:'¿Qué cambio han hecho muchos circos actuales?', o:['Dejar de viajar entre ciudades','Presentar funciones solo al aire libre','Dejar de presentar animales salvajes'], r:2, ex:'Por el bienestar animal, muchos circos ahora basan su función solo en artistas humanos, pero siguen viajando y usando carpa.'}
+          ]
+        }
+      ]
+    }
+  }
+];
+
+</script>
+<script>
+window.DATOS_INT = {
+
+  // ---------- MATEMÁTICAS ----------
+  'mate|semillas':[
+    {t:'conteo', p:'Toca 5 pelotas', emoji:'🟡', total:8, r:5, ex:'Cuenta en voz alta mientras tocas y detente al llegar al 5. Si sigues tocando ya son más de 5.'},
+    {t:'frac', p:'Pinta la mitad de la barra', partes:2, pinta:1, ex:'La mitad es una de dos partes iguales: queda tanto pintado como sin pintar.'}
+  ],
+  'mate|malabaristas':[
+    {t:'recta', p:'¿Dónde está el 15?', min:0, max:20, paso:1, r:15, ex:'El 15 está cinco marcas después del 10, así que queda más cerca del 20 que del 0.'},
+    {t:'frac', p:'Pinta 3/4 de la barra', partes:4, pinta:3, ex:'El número de abajo dice en cuántas partes iguales se partió la barra; el de arriba, cuántas de esas partes pintas.'}
+  ],
+  'mate|acrobatas':[
+    {t:'frac', p:'La carpa tiene 10 filas de asientos. Pinta el 40% de la barra', partes:10, pinta:4, ex:'Un porcentaje son partes de cada 100. El 40% es 40 de cada 100, que equivale a 4 de cada 10.'},
+    {t:'recta', p:'¿Dónde está el 0.75?', min:0, max:1, paso:0.25, r:0.75, ex:'Cada marca vale 0.25, o sea un cuarto. El 0.75 son tres cuartos: tres marcas después del cero.'}
+  ],
+
+  // ---------- ESPAÑOL ----------
+  'esp|semillas':[
+    {t:'parear', p:'Une cada dibujo con su palabra', pares:[['🐶','perro'],['🌞','sol'],['🐱','gato']], ex:'Fíjate en el sonido con el que empieza cada palabra: perro empieza con p y gato con g.'},
+    {t:'conteo', p:'PA-YA-SO. Toca una palma por cada pedacito de la palabra', emoji:'👏', total:5, r:3, ex:'Cada golpe de voz es una sílaba. En payaso son tres: PA, YA, SO.'}
+  ],
+  'esp|malabaristas':[
+    {t:'orden', p:'Ordena las palabras para armar la oración', items:['El','payaso','pinta','su','cara'], ex:'En una oración se dice primero quién hace la acción, luego cuál es la acción y al final sobre qué cosa se hace.'},
+    {t:'parear', p:'Une cada palabra con su sinónimo', pares:[['contento','alegre'],['bonito','hermoso'],['rápido','veloz'],['grande','enorme']], ex:'Los sinónimos son palabras diferentes que significan casi lo mismo, así no repites siempre la misma.'}
+  ],
+  'esp|acrobatas':[
+    {t:'parear', p:'Une cada palabra con el tipo de palabra que es', pares:[['carpa','sustantivo'],['saltar','verbo'],['alto','adjetivo'],['rápidamente','adverbio']], ex:'El sustantivo nombra cosas, el verbo dice la acción, el adjetivo describe cómo es algo y el adverbio dice cómo se hace la acción.'},
+    {t:'orden', p:'Ordena estas palabras en orden alfabético', items:['acróbata','carpa','malabar','payaso','trapecio'], ex:'Se compara la primera letra de cada palabra siguiendo el abecedario; solo si se repite hay que mirar la segunda.'}
+  ],
+
+  // ---------- LECTURA ----------
+  'lect|semillas':[
+    {t:'orden', p:'Ordena lo que pasa en el cuento', items:['🤡 El payaso se pinta la cara','🎪 Sale a la pista','😂 Todos se ríen'], ex:'Primero se prepara, luego sale y hasta el final el público reacciona. Nadie se ríe antes de que salga.'},
+    {t:'parear', p:'Une a cada artista con lo que usa', pares:[['🤡 El payaso','La nariz roja'],['🎩 El mago','El sombrero'],['🤸 La trapecista','El columpio']], ex:'Piensa qué necesita cada uno para hacer su número: sin columpio no hay trapecio.'}
+  ],
+  'lect|malabaristas':[
+    {t:'orden', p:'Ordena la historia de Lía y el perro', items:['Lía encuentra un perro perdido en la carpa','Le da agua y comida','Pega un cartel afuera del circo','La dueña llega por él'], ex:'Cada paso solo puede pasar después del anterior: la dueña no puede llegar si todavía no hay cartel que avise.'},
+    {t:'parear', p:'En la historia de Lía y el perro, une a cada quién con lo que hizo', pares:[['Lía','Encontró al perro'],['El perro','Se perdió dentro de la carpa'],['La dueña','Se llevó al perro a casa']], ex:'Vuelve a contar la historia en tu cabeza y fíjate en quién hace cada acción y a quién le pasa.'}
+  ],
+  'lect|acrobatas':[
+    {t:'parear', p:'Une cada parte del cuento con lo que le toca contar', pares:[['Planteamiento','Presenta a los personajes y el lugar'],['Nudo','Aparece el problema'],['Desenlace','Se resuelve el problema']], ex:'Casi todo cuento sigue esas tres partes en ese orden; lo que cambia es cuánto se alarga cada una.'},
+    {t:'orden', p:'Ordena los sucesos del cuento, del primero al último', items:['El circo llega a un pueblo que se quedó sin agua','Los artistas y la gente cavan un pozo','Brota el agua','El pueblo hace una fiesta y el circo regala boletos'], ex:'Cada suceso es la causa del siguiente: sin pozo no hay agua, y sin agua no habría nada que celebrar.'}
+  ],
+
+  // ---------- CIENCIAS NATURALES ----------
+  'cien|semillas':[
+    {t:'parear', p:'Une cada animal con su casa', pares:[['🐦 El pájaro','El nido'],['🐝 La abeja','El panal'],['🐭 El ratón','La cueva']], ex:'Cada animal hace o busca un lugar distinto para dormir y cuidar a sus crías.'},
+    {t:'orden', p:'Ordena cómo crece una planta', items:['🌰 La semilla','🌱 El brote','🌿 La planta','🌻 La flor'], ex:'Todo empieza en la semilla. La flor sale hasta el final, cuando la planta ya creció.'}
+  ],
+  'cien|malabaristas':[
+    {t:'orden', p:'Ordena el ciclo del agua', items:['El sol calienta el agua del mar','El agua sube como vapor','Se forman las nubes','Cae la lluvia'], ex:'El motor del ciclo es el calor del sol: sin evaporación no habría nubes, y sin nubes no habría lluvia.'},
+    {t:'parear', p:'Une cada órgano con lo que hace', pares:[['El corazón','Bombea la sangre'],['Los pulmones','Toman el oxígeno del aire'],['El estómago','Deshace la comida'],['El cerebro','Manda las órdenes al cuerpo']], ex:'Cada órgano tiene su tarea y ninguno hace el trabajo del otro; por eso trabajan en equipo.'}
+  ],
+  'cien|acrobatas':[
+    {t:'parear', p:'Une cada animal con su grupo', pares:[['La ballena','Mamífero'],['La rana','Anfibio'],['El águila','Ave'],['La víbora','Reptil']], ex:'El grupo no depende de dónde vive: la ballena nada en el mar, pero respira aire y amamanta a sus crías, así que es mamífero.'},
+    {t:'orden', p:'Ordena las etapas de la mariposa', items:['Huevo','Oruga','Crisálida','Mariposa'], ex:'Es una metamorfosis completa: el animal cambia de forma por completo en cada etapa y no puede saltarse ninguna.'}
+  ],
+
+  // ---------- GEOGRAFÍA ----------
+  'geo|semillas':[
+    {t:'orden', p:'Ordena de lo más chico a lo más grande', items:['🏠 Tu casa','🛣️ Tu calle','🏙️ Tu ciudad','🇲🇽 México'], ex:'Cada uno cabe dentro del que sigue: tu casa está en tu calle y tu calle está en tu ciudad.'},
+    {t:'parear', p:'Une cada lugar con lo que ves ahí', pares:[['🏖️ La playa','El mar'],['⛰️ La montaña','La nieve en la punta'],['🌳 El bosque','Muchos árboles']], ex:'Cada paisaje tiene algo que casi no se ve en los otros.'}
+  ],
+  'geo|malabaristas':[
+    {t:'parear', p:'Une cada estado con lo que lo hace famoso', pares:[['Yucatán','La ciudad maya de Chichén Itzá'],['Veracruz','Su puerto en el golfo de México'],['Jalisco','El mariachi y el tequila'],['Chiapas','La selva Lacandona']], ex:'Cada estado destaca por algo distinto: unos por su historia, otros por su paisaje o por su música.'},
+    {t:'orden', p:'Ordena de lo más chico a lo más grande', items:['Tu ciudad','Tu estado','México','América'], ex:'Cada uno contiene al anterior: tu estado está dentro de México y México está dentro del continente americano.'}
+  ],
+  'geo|acrobatas':[
+    {t:'parear', p:'Une cada país con su continente', pares:[['Brasil','América'],['Japón','Asia'],['Nigeria','África'],['Australia','Oceanía']], ex:'Ninguno de estos países se reparte entre dos continentes, así que cada uno tiene un solo continente posible.'},
+    {t:'orden', p:'Ordena las capas de la Tierra, de la superficie hacia el centro', items:['Corteza','Manto','Núcleo externo','Núcleo interno'], ex:'La corteza es la capa delgada donde vivimos. Entre más te acercas al centro, más calor y más presión hay.'}
+  ],
+
+  // ---------- HISTORIA ----------
+  'hist|semillas':[
+    {t:'orden', p:'Ordena de lo más antiguo a lo más nuevo', items:['👵 Tu abuela era niña','👩 Tu mamá era niña','👶 Tú eras bebé','🎒 Tú vas a la escuela'], ex:'Los grandes de tu familia fueron niños mucho antes que tú; por eso van primero.'},
+    {t:'parear', p:'Une cada cosa de antes con la que usamos hoy', pares:[['🐴 La carreta','El carro'],['🕯️ La vela','El foco'],['✉️ La carta','El teléfono']], ex:'Cada cosa nueva hace el mismo trabajo que la vieja, pero más rápido o más fácil.'}
+  ],
+  'hist|malabaristas':[
+    {t:'orden', p:'Ordena estos hechos, del más antiguo al más reciente', items:['Los olmecas tallan las cabezas de piedra','Los mexicas fundan Tenochtitlan','Llegan los españoles a estas tierras','México se vuelve un país independiente'], ex:'Los olmecas son la cultura más antigua de la lista. Entre la fundación de Tenochtitlan y la llegada de los españoles pasaron casi doscientos años.'},
+    {t:'parear', p:'Une cada personaje con lo que hizo', pares:[['Miguel Hidalgo','Dio el Grito de Dolores en 1810'],['José María Morelos','Siguió la lucha insurgente después de Hidalgo'],['Benito Juárez','Fue presidente y defendió las Leyes de Reforma']], ex:'Los tres lucharon en momentos distintos: Hidalgo y Morelos en la Independencia, y Juárez casi cincuenta años después.'}
+  ],
+  'hist|acrobatas':[
+    {t:'orden', p:'Ordena estos hechos de la historia de México, del más antiguo al más reciente', items:['La fundación de Tenochtitlan','La conquista de Tenochtitlan por los españoles','El inicio de la guerra de Independencia','El inicio de la Revolución Mexicana','La Constitución de 1917'], ex:'Fíjate en los siglos: entre la conquista y el inicio de la Independencia pasaron casi trescientos años de virreinato.'},
+    {t:'parear', p:'Une cada personaje de la Revolución con lo que hizo', pares:[['Francisco I. Madero','Llamó a levantarse contra la reelección en 1910'],['Emiliano Zapata','Luchó en el sur por el reparto de la tierra'],['Francisco Villa','Dirigió la División del Norte'],['Porfirio Díaz','Gobernó más de treinta años y renunció en 1911']], ex:'Cada uno tuvo un papel distinto: Madero encendió la Revolución, Zapata y Villa la pelearon en el campo, y Díaz era contra quien iba dirigida.'}
+  ]
+
+};
+
+</script>
+<script>
+/* Carpa de Saberes — página de inicio: escoger o crear artista */
+(function(){
+'use strict';
+
+var C = window.Carpa;
+function $(id){ return document.getElementById(id); }
+
+C.migrar();
+C.banderines($('banderines'));
+
+var editando = null;              // id del perfil que se edita, o null si es alta
+var caraElegida = C.CARAS[0];
+var nivelElegido = 'malabaristas';
+
+/* ---------- lista de artistas ---------- */
+function pintarArtistas(){
+  var cont = $('rejillaArtistas');
+  var lista = C.perfiles();
+  cont.innerHTML = '';
+
+  lista.forEach(function(p){
+    var r = C.resumen(p.id);
+    var nv = C.nivelPorId(p.nivel);
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'artista';
+    b.innerHTML =
+      '<span class="cara" aria-hidden="true">' + p.cara + '</span>' +
+      '<span class="nombre">' + C.esc(p.nombre) + '</span>' +
+      '<span class="detalle">' + C.esc(nv.nombre) + '</span>' +
+      '<span class="marcador"><span>⭐ ' + r.estrellas + '</span><span>🎟️ ' + r.boletos + '</span></span>';
+    b.addEventListener('click', function(){ entrar(p.id); });
+    cont.appendChild(b);
+  });
+
+  var nuevo = document.createElement('button');
+  nuevo.type = 'button';
+  nuevo.className = 'artista artista--nuevo';
+  nuevo.innerHTML =
+    '<span class="cara" aria-hidden="true">＋</span>' +
+    '<span class="nombre">Nuevo artista</span>' +
+    '<span class="detalle">' + (lista.length ? 'Otro más' : 'Empieza aquí') + '</span>';
+  nuevo.addEventListener('click', function(){ abrirAlta(null); });
+  cont.appendChild(nuevo);
+
+  if(lista.length){
+    var ayuda = document.createElement('p');
+    ayuda.style.cssText = 'color:var(--tinta2);font-size:14px;margin:18px 0 0';
+    ayuda.textContent = 'Para cambiar tu cara o tu nivel, entra y usa el botón de tu nombre.';
+    cont.parentNode.insertBefore(ayuda, cont.nextSibling);
+  }
+}
+
+function entrar(id){
+  C.activar(id);
+  // En el archivo suelto no hay a donde navegar: se recarga y el
+  // conmutador muestra la Estacion con el artista ya elegido.
+  if(window.CARPA_UNICO) location.reload();
+  else location.href = 'estacion.html';
+}
+
+/* ---------- alta y edición ---------- */
+function pintarCaras(){
+  var cont = $('listaCaras');
+  cont.innerHTML = '';
+  C.CARAS.forEach(function(cara){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'cara-op';
+    b.setAttribute('aria-pressed', String(cara === caraElegida));
+    b.setAttribute('aria-label', 'Cara ' + cara);
+    b.textContent = cara;
+    b.addEventListener('click', function(){
+      caraElegida = cara;
+      pintarCaras();
+    });
+    cont.appendChild(b);
+  });
+}
+
+function pintarNiveles(){
+  var cont = $('listaNiveles');
+  cont.innerHTML = '';
+  C.NIVELES.forEach(function(nv){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'nivel';
+    b.setAttribute('aria-pressed', String(nv.id === nivelElegido));
+    b.innerHTML = '<strong>' + C.esc(nv.nombre) + '</strong><span>' + C.esc(nv.edad) + '</span>';
+    b.addEventListener('click', function(){
+      nivelElegido = nv.id;
+      pintarNiveles();
+    });
+    cont.appendChild(b);
+  });
+}
+
+function abrirAlta(id){
+  editando = id;
+  var p = id ? C.porId(id) : null;
+  caraElegida = p ? p.cara : C.CARAS[0];
+  nivelElegido = p ? p.nivel : 'malabaristas';
+
+  $('campoNombre').value = p ? p.nombre : '';
+  $('rotuloAlta').textContent = p ? 'Editar artista' : 'Nuevo artista';
+  $('tituloAlta').textContent = p ? 'Cambia lo que quieras' : 'Crea tu artista';
+  $('btnGuardar').textContent = p ? 'Guardar cambios' : 'Entrar a la Estación →';
+  $('btnBorrar').hidden = !p;
+  $('errorNombre').hidden = true;
+  $('campoNombre').style.borderColor = '';
+
+  pintarCaras();
+  pintarNiveles();
+  $('vistaArtistas').hidden = true;
+  $('vistaAlta').hidden = false;
+  setTimeout(function(){ $('campoNombre').focus(); }, 60);
+}
+
+function cerrarAlta(){
+  $('vistaAlta').hidden = true;
+  $('vistaArtistas').hidden = false;
+  pintarArtistas();
+}
+
+function guardar(){
+  var campo = $('campoNombre');
+  var nombre = campo.value.trim();
+  if(!nombre){
+    campo.style.borderColor = 'var(--rojo)';
+    $('errorNombre').textContent = 'Escribe tu nombre para poder guardar tus estrellas.';
+    $('errorNombre').hidden = false;
+    campo.focus();
+    return;
+  }
+  campo.style.borderColor = '';
+  $('errorNombre').hidden = true;
+
+  if(editando){
+    C.actualizar(editando, {nombre:nombre, cara:caraElegida, nivel:nivelElegido});
+    entrar(editando);
+  } else {
+    var p = C.crear({nombre:nombre, cara:caraElegida, nivel:nivelElegido});
+    entrar(p.id);
+  }
+}
+
+function borrar(){
+  if(!editando) return;
+  var p = C.porId(editando);
+  if(!p) return;
+  var r = C.resumen(editando);
+  var aviso = r.estrellas
+    ? 'Se van a borrar ' + p.nombre + ' y sus ' + r.estrellas + ' estrellas. Esto no se puede deshacer.'
+    : 'Se va a borrar ' + p.nombre + '. Esto no se puede deshacer.';
+  if(!confirm(aviso)) return;
+  C.borrar(editando);
+  editando = null;
+  cerrarAlta();
+}
+
+/* ---------- conexión e instalación ---------- */
+var eventoInstalar = null;
+
+function pintarEstadoLinea(){
+  var aviso = $('avisoLinea'), texto = $('textoAviso'), estado = $('estadoOffline');
+  if(!navigator.onLine){
+    texto.textContent = '📴 Sin internet, pero la Carpa sigue abierta.';
+    aviso.hidden = false;
+    if(estado) estado.textContent = 'Trabajando sin conexión';
+  } else if(eventoInstalar){
+    texto.textContent = '📲 Guárdala en este aparato y ábrela aunque no haya internet.';
+    aviso.hidden = false;
+    if(estado) estado.textContent = 'En línea';
+  } else {
+    aviso.hidden = true;
+    if(estado) estado.textContent = 'En línea';
+  }
+}
+
+addEventListener('beforeinstallprompt', function(e){
+  e.preventDefault();
+  eventoInstalar = e;
+  $('btnInstalar').hidden = false;
+  pintarEstadoLinea();
+});
+addEventListener('appinstalled', function(){
+  eventoInstalar = null;
+  $('btnInstalar').hidden = true;
+  pintarEstadoLinea();
+});
+addEventListener('online',  pintarEstadoLinea);
+addEventListener('offline', pintarEstadoLinea);
+
+$('btnInstalar').addEventListener('click', function(){
+  if(!eventoInstalar) return;
+  eventoInstalar.prompt();
+  eventoInstalar.userChoice.then(function(){
+    eventoInstalar = null;
+    $('btnInstalar').hidden = true;
+    pintarEstadoLinea();
+  });
+});
+
+/* ---------- arranque ---------- */
+$('btnGuardar').addEventListener('click', guardar);
+$('btnCancelar').addEventListener('click', cerrarAlta);
+$('btnBorrar').addEventListener('click', borrar);
+$('campoNombre').addEventListener('keydown', function(e){
+  if(e.key === 'Enter'){ e.preventDefault(); guardar(); }
+});
+
+pintarArtistas();
+pintarEstadoLinea();
+
+// Si llega con ?editar=<id> desde la estación, abre la edición directo.
+var m = /[?&]editar=([^&]+)/.exec(location.search);
+if(m && C.porId(decodeURIComponent(m[1]))) abrirAlta(decodeURIComponent(m[1]));
+
+})();
+
+</script>
+<script>
+/* Carpa de Saberes — motor de la Estación */
+function arrancarMotor(){
+'use strict';
+
+var C = window.Carpa;
+function $(id){ return document.getElementById(id); }
+
+/* ---------- perfil activo ---------- */
+var perfil = C.activo();
+if(!perfil){ if(!window.CARPA_UNICO) location.replace('index.html'); return; }
+var progreso = C.progreso(perfil.id);
+
+/* ---------- catálogo ---------- */
+var ORDEN = ['mate','esp','lect','cien','geo','hist'];
+var TODOS = [].concat(window.DATOS_A || [], window.DATOS_B || []);
+var CURSOS = ORDEN.map(function(id){
+  return TODOS.filter(function(c){ return c.id === id; })[0];
+}).filter(Boolean);
+TODOS.forEach(function(c){ if(CURSOS.indexOf(c) === -1) CURSOS.push(c); });
+
+/* Los ejercicios interactivos se reparten entre las lecciones del nivel,
+   uno por lección, para que ninguna quede mucho más larga que la otra. */
+(function inyectarInteractivos(){
+  var INT = window.DATOS_INT || {};
+  Object.keys(INT).forEach(function(clave){
+    var partes = clave.split('|');
+    var curso = CURSOS.filter(function(c){ return c.id === partes[0]; })[0];
+    if(!curso || !curso.niveles || !curso.niveles[partes[1]]) return;
+    var lecs = curso.niveles[partes[1]];
+    if(!lecs.length) return;
+    (INT[clave] || []).forEach(function(ej, i){
+      lecs[i % lecs.length].ejercicios.push(ej);
+    });
+  });
+})();
+
+var st = { nivel: perfil.nivel, curso:null, lecIdx:0, idx:0, aciertos:0, respondida:false };
+
+function claveLec(cursoId, nivel, i){ return cursoId + '|' + nivel + '|' + i; }
+function leccionesDe(curso, nivel){ return (curso.niveles && curso.niveles[nivel]) || []; }
+function leccionActual(){ return leccionesDe(st.curso, st.nivel)[st.lecIdx]; }
+
+/* ---------- comparación de respuestas escritas ---------- */
+function normaliza(s){
+  return String(s).toLowerCase().trim()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/[.,;:!?¡¿"']/g,'')
+    .replace(/\s+/g,' ');
+}
+function tieneLetras(s){ return /[a-z0-9áéíóúñ]/i.test(String(s)); }
+// "los lápices" y "lápices" son la misma respuesta para un niño.
+function sinArticulo(s){ return String(s).replace(/^(el|la|los|las|un|una|unos|unas) /, ''); }
+function aNumero(s){
+  var n = parseFloat(String(s).replace(',', '.').replace(/\s/g,''));
+  return isNaN(n) ? null : n;
+}
+function revuelve(arr){
+  var a = arr.slice();
+  for(var i=a.length-1;i>0;i--){
+    var j = Math.floor(Math.random()*(i+1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+var esc = C.esc;
+
+/* ---------- voz ---------- */
+var vozOk = typeof speechSynthesis !== 'undefined';
+function hablar(texto){
+  if(!vozOk) return;
+  try{
+    speechSynthesis.cancel();
+    var u = new SpeechSynthesisUtterance(String(texto).replace(/\s+/g,' ').trim());
+    u.lang = 'es-MX'; u.rate = 0.92; u.pitch = 1.05;
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+function callar(){ if(vozOk){ try{ speechSynthesis.cancel(); }catch(e){} } }
+
+/* ---------- confeti ---------- */
+var cv = $('confeti'), cx = cv.getContext('2d'), trozos = [], animando = false;
+var suave = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function ajustarLienzo(){ cv.width = innerWidth; cv.height = innerHeight; }
+ajustarLienzo(); addEventListener('resize', ajustarLienzo);
+
+function lanzarConfeti(){
+  if(suave) return;
+  var colores = ['#C62828','#E8A317','#0E757E','#337A3D','#F7EDDA'];
+  for(var i=0;i<70;i++){
+    trozos.push({
+      x: innerWidth/2 + (Math.random()-0.5)*220, y: innerHeight*0.42,
+      vx: (Math.random()-0.5)*9, vy: -Math.random()*11 - 3,
+      g: 0.32 + Math.random()*0.16, an: Math.random()*Math.PI,
+      va: (Math.random()-0.5)*0.3, t: 5 + Math.random()*7,
+      c: colores[i % colores.length], vida: 90 + Math.random()*40
+    });
+  }
+  if(!animando){ animando = true; requestAnimationFrame(pintar); }
+}
+function pintar(){
+  cx.clearRect(0,0,cv.width,cv.height);
+  trozos = trozos.filter(function(p){ return p.vida > 0 && p.y < cv.height + 40; });
+  trozos.forEach(function(p){
+    p.x += p.vx; p.y += p.vy; p.vy += p.g; p.an += p.va; p.vida--;
+    cx.save(); cx.translate(p.x,p.y); cx.rotate(p.an);
+    cx.fillStyle = p.c; cx.fillRect(-p.t/2, -p.t/2, p.t, p.t*0.6);
+    cx.restore();
+  });
+  if(trozos.length){ requestAnimationFrame(pintar); }
+  else { animando = false; cx.clearRect(0,0,cv.width,cv.height); }
+}
+
+C.banderines($('banderinesEstacion') || $('banderines'));
+
+/* ---------- vistas e historial ---------- */
+var VISTAS = {
+  programa: $('vistaPrograma'), curso: $('vistaCurso'), leccion: $('vistaLeccion'),
+  pista: $('vistaPista'), telon: $('vistaTelon')
+};
+var vistaActual = 'programa';
+var ignorarHash = false;
+
+function mostrar(nombre, sinHistorial){
+  callar();
+  Object.keys(VISTAS).forEach(function(k){ VISTAS[k].hidden = (k !== nombre); });
+  vistaActual = nombre;
+  window.scrollTo({top:0, behavior: suave ? 'auto' : 'smooth'});
+  VISTAS[nombre].focus();
+  if(!sinHistorial) apuntarHistorial(nombre);
+}
+function apuntarHistorial(nombre){
+  try{
+    if(('#' + nombre) === location.hash) return;
+    ignorarHash = true;
+    location.hash = nombre;
+    setTimeout(function(){ ignorarHash = false; }, 0);
+  }catch(e){}
+}
+function corregirHash(nombre){
+  if(('#' + nombre) === location.hash) return;
+  ignorarHash = true;
+  try{ history.replaceState(null, '', '#' + nombre); }
+  catch(e){ try{ location.replace('#' + nombre); }catch(e2){} }
+  setTimeout(function(){ ignorarHash = false; }, 0);
+}
+addEventListener('hashchange', function(){
+  if(ignorarHash) return;
+  var destino = (location.hash || '#programa').slice(1);
+  if(destino === vistaActual) return;
+  if(destino === 'programa'){ pintarCursos(); }
+  if(destino === 'curso' && st.curso){ abrirCurso(st.curso, true); }
+  else if(destino === 'leccion' && st.curso){ abrirLeccion(st.lecIdx, true); }
+  else if((destino === 'pista' || destino === 'telon') && st.curso){ abrirLeccion(st.lecIdx, true); corregirHash('leccion'); }
+  else { pintarCursos(); mostrar('programa', true); corregirHash('programa'); }
+});
+
+/* ---------- cabecera ---------- */
+function pintarCabecera(){
+  var r = C.resumen(perfil.id);
+  $('caraArtista').textContent = perfil.cara;
+  $('txtNombre').textContent = perfil.nombre;
+  $('chipArtista').href = 'index.html?editar=' + encodeURIComponent(perfil.id);
+  $('txtBoletos').textContent = r.boletos;
+  $('txtEstrellas').textContent = r.estrellas;
+}
+
+/* ---------- programa ---------- */
+function pintarCursos(){
+  var nv = C.nivelPorId(st.nivel);
+  $('rotuloNivel').textContent = 'Nivel ' + nv.nombre + ' · ' + nv.edad;
+  $('tituloPrograma').textContent = 'El programa de ' + perfil.nombre;
+
+  var cont = $('rejillaCursos');
+  cont.innerHTML = '';
+  CURSOS.forEach(function(curso, i){
+    var lecs = leccionesDe(curso, st.nivel);
+    var hechas = lecs.filter(function(_, j){
+      var p = progreso[claveLec(curso.id, st.nivel, j)];
+      return p && p.estrellas > 0;
+    }).length;
+    var pct = lecs.length ? Math.round(hechas / lecs.length * 100) : 0;
+
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'cartel';
+    b.innerHTML =
+      '<span class="num">Número ' + ('0' + (i+1)).slice(-2) + '</span>' +
+      '<span class="icono" aria-hidden="true">' + curso.icono + '</span>' +
+      '<h3>' + esc(curso.nombre) + '</h3>' +
+      '<p>' + esc(curso.desc) + '</p>' +
+      '<div class="medidor"><i style="width:' + pct + '%"></i></div>' +
+      '<div class="pie-cartel"><span>' + hechas + ' de ' + lecs.length + ' lecciones</span><span>' +
+        (lecs.length ? (pct === 100 ? '¡completo!' : 'entrar →') : 'pronto') + '</span></div>';
+    b.addEventListener('click', function(){ abrirCurso(curso); });
+    cont.appendChild(b);
+  });
+}
+
+/* ---------- curso ---------- */
+function abrirCurso(curso, sinHistorial){
+  st.curso = curso;
+  var nv = C.nivelPorId(st.nivel);
+  $('cursoIcono').textContent = curso.icono;
+  $('cursoTitulo').textContent = curso.nombre;
+  $('cursoNivel').textContent = 'Nivel ' + nv.nombre + ' · ' + nv.edad;
+  $('cursoDesc').textContent = curso.desc;
+
+  var lecs = leccionesDe(curso, st.nivel);
+  var cont = $('listaLecciones');
+  cont.innerHTML = '';
+  if(!lecs.length){
+    cont.innerHTML = '<p style="color:var(--tinta2)">Todavía no hay lecciones de este curso para este nivel.</p>';
+  }
+  lecs.forEach(function(lec, j){
+    var p = progreso[claveLec(curso.id, st.nivel, j)] || {estrellas:0};
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'leccion-fila';
+    b.innerHTML =
+      '<span class="orden" aria-hidden="true">' + (j+1) + '</span>' +
+      '<span class="cuerpo"><strong>' + esc(lec.titulo) + '</strong>' +
+      '<small>' + lec.ejercicios.length + ' ejercicios' + (lec.lectura ? ' · con lectura' : '') + '</small></span>' +
+      '<span class="estrellas" style="color:var(--oro)">' + C.estrellasTxt(p.estrellas || 0) + '</span>';
+    b.addEventListener('click', function(){ abrirLeccion(j); });
+    cont.appendChild(b);
+  });
+  mostrar('curso', sinHistorial);
+}
+
+/* ---------- lección ---------- */
+function abrirLeccion(j, sinHistorial){
+  st.lecIdx = j;
+  var lec = leccionActual();
+  $('lecRotulo').textContent = st.curso.nombre + ' · Lección ' + (j+1);
+  $('lecTitulo').textContent = lec.titulo;
+
+  var html = '<p>' + esc(lec.intro) + '</p>';
+  if(lec.puntos && lec.puntos.length){
+    html += '<ul>' + lec.puntos.map(function(p){ return '<li>' + esc(p) + '</li>'; }).join('') + '</ul>';
+  }
+  if(lec.lectura){
+    html += '<div class="lectura"><h3>' + esc(lec.lectura.titulo) + '</h3>' +
+      lec.lectura.texto.split('\n\n').map(function(p){ return '<p>' + esc(p) + '</p>'; }).join('') + '</div>';
+  }
+  if(lec.dato){ html += '<p class="dato"><strong>Dato de circo · </strong>' + esc(lec.dato) + '</p>'; }
+  $('lecCuerpo').innerHTML = html;
+  $('btnLeer').hidden = !vozOk;
+  mostrar('leccion', sinHistorial);
+}
+
+function textoLeccion(){
+  var lec = leccionActual();
+  var t = lec.titulo + '. ' + lec.intro + ' ';
+  if(lec.puntos) t += lec.puntos.join('. ') + '. ';
+  if(lec.lectura) t += lec.lectura.titulo + '. ' + lec.lectura.texto.replace(/—/g,'');
+  return t;
+}
+
+/* ---------- ejercicios ---------- */
+function empezar(){
+  st.idx = 0; st.aciertos = 0;
+  mostrar('pista');
+  pintarPregunta();
+}
+
+function pintarPregunta(){
+  var lec = leccionActual();
+  var ej = lec.ejercicios[st.idx];
+  var total = lec.ejercicios.length;
+  st.respondida = false;
+
+  $('pistaPaso').textContent = 'Pregunta ' + (st.idx+1) + ' de ' + total;
+  $('rielBarra').style.width = (st.idx / total * 100) + '%';
+  $('btnLeerPregunta').hidden = !vozOk;
+
+  var zona = $('zonaPregunta');
+  zona.innerHTML = '';
+
+  var h = document.createElement('p');
+  h.className = 'pregunta'; h.textContent = ej.p;
+  zona.appendChild(h);
+
+  if(ej.emoji && ej.t !== 'conteo'){
+    var em = document.createElement('p');
+    em.className = 'emojis'; em.textContent = ej.emoji; em.setAttribute('aria-hidden','true');
+    zona.appendChild(em);
+  }
+
+  switch(ej.t){
+    case 'op':     pintarOpciones(zona, ej, ej.o); break;
+    case 'vf':     pintarOpciones(zona, ej, ['Verdadero','Falso'], true); break;
+    case 'frac':   pintarFraccion(zona, ej); break;
+    case 'recta':  pintarRecta(zona, ej); break;
+    case 'orden':  pintarOrden(zona, ej); break;
+    case 'parear': pintarParear(zona, ej); break;
+    case 'conteo': pintarConteo(zona, ej); break;
+    default:       pintarCampo(zona, ej);
+  }
+
+  if(st.nivel === 'semillas'){ hablar(textoPregunta()); }
+}
+
+function textoPregunta(){
+  var ej = leccionActual().ejercicios[st.idx];
+  var t = ej.p;
+  if(ej.t === 'op'){
+    t += ej.sinListaVoz ? '. Mira las opciones en la pantalla.' : '. Opciones: ' + ej.o.join(', ') + '.';
+  }
+  if(ej.t === 'vf')     t += '. ¿Verdadero o falso?';
+  if(ej.t === 'frac')   t += '. Toca las partes de la barra para pintarlas.';
+  if(ej.t === 'recta')  t += '. Toca el número en la recta.';
+  if(ej.t === 'orden')  t += '. Toca las tarjetas en el orden correcto.';
+  if(ej.t === 'parear') t += '. Toca uno de la izquierda y luego su pareja de la derecha.';
+  if(ej.t === 'conteo') t += '. Toca las figuras para contarlas.';
+  return t;
+}
+
+/* --- ayuda compartida por los tipos interactivos --- */
+function taller(zona, ayuda){
+  var caja = document.createElement('div');
+  caja.className = 'taller';
+  if(ayuda){
+    var p = document.createElement('p');
+    p.className = 'ayuda-taller';
+    p.textContent = ayuda;
+    caja.appendChild(p);
+  }
+  zona.appendChild(caja);
+  return caja;
+}
+function botonRevisar(caja, alRevisar){
+  var acc = document.createElement('div');
+  acc.className = 'acciones';
+  var b = document.createElement('button');
+  b.type = 'button'; b.className = 'btn btn--rojo'; b.textContent = 'Revisar';
+  b.addEventListener('click', function(){
+    if(st.respondida) return;
+    b.disabled = true;
+    alRevisar();
+  });
+  acc.appendChild(b);
+  caja.appendChild(acc);
+  return b;
+}
+
+/* --- opción múltiple y verdadero/falso --- */
+function pintarOpciones(zona, ej, etiquetas, esVF){
+  var cont = document.createElement('div');
+  cont.className = 'opciones' + (etiquetas.length === 2 ? ' dos' : '');
+  var letras = ['A','B','C','D'];
+  etiquetas.forEach(function(txt, i){
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'op';
+    b.innerHTML = '<span class="marca-op" aria-hidden="true">' + letras[i] + '</span><span>' + esc(txt) + '</span>';
+    b.addEventListener('click', function(){
+      if(st.respondida) return;
+      var correcta = esVF ? (ej.r === true ? 0 : 1) : ej.r;
+      Array.prototype.forEach.call(cont.children, function(el, k){
+        el.disabled = true;
+        if(k === correcta) el.classList.add('bien');
+        else if(k === i) el.classList.add('mal');
+      });
+      resolver(i === correcta, ej, etiquetas[correcta]);
+    });
+    cont.appendChild(b);
+  });
+  zona.appendChild(cont);
+}
+
+/* --- respuesta escrita --- */
+function pintarCampo(zona, ej){
+  var fila = document.createElement('div');
+  fila.className = 'fila-respuesta';
+  var inp = document.createElement('input');
+  inp.type = 'text';
+  inp.inputMode = (ej.t === 'num') ? 'decimal' : 'text';
+  inp.autocomplete = 'off';
+  inp.setAttribute('aria-label','Tu respuesta');
+  inp.placeholder = (ej.t === 'num') ? 'Tu número' : 'Tu respuesta';
+  var b = document.createElement('button');
+  b.type = 'button'; b.className = 'btn btn--rojo'; b.textContent = 'Revisar';
+
+  function revisar(){
+    if(st.respondida) return;
+    var v = inp.value.trim();
+    if(!v){ inp.focus(); return; }
+    var bien, esperada;
+    if(ej.t === 'num'){
+      var n = aNumero(v);
+      bien = (n !== null && Math.abs(n - ej.r) < 1e-9);
+      esperada = String(ej.r);
+    } else {
+      esperada = ej.r[0];
+      var dado = normaliza(v), pelado = sinArticulo(dado);
+      bien = ej.r.some(function(r){
+        if(!tieneLetras(r)) return String(r).trim() === v;
+        var e2 = normaliza(r);
+        return e2 === dado || sinArticulo(e2) === pelado;
+      });
+    }
+    inp.disabled = true; b.disabled = true;
+    inp.style.borderColor = bien ? 'var(--verde)' : 'var(--rojo)';
+    resolver(bien, ej, esperada);
+  }
+  b.addEventListener('click', revisar);
+  inp.addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); revisar(); } });
+  fila.appendChild(inp); fila.appendChild(b);
+  zona.appendChild(fila);
+  setTimeout(function(){ inp.focus(); }, 60);
+}
+
+/* --- 1. pintar fracciones --- */
+function pintarFraccion(zona, ej){
+  var caja = taller(zona, 'Toca las partes para pintarlas. Vuelve a tocar para despintar.');
+  var pintadas = [];
+  var barra = document.createElement('div');
+  barra.className = 'barra-frac';
+  barra.setAttribute('role','group');
+  barra.setAttribute('aria-label','Barra de ' + ej.partes + ' partes');
+
+  var cuenta = document.createElement('p');
+  cuenta.className = 'cuenta-frac';
+
+  function actualizar(){
+    var n = pintadas.filter(Boolean).length;
+    cuenta.innerHTML = '<small>llevas pintado</small>' + n + ' de ' + ej.partes;
+  }
+
+  for(var i=0;i<ej.partes;i++){
+    (function(k){
+      pintadas[k] = false;
+      var c = document.createElement('button');
+      c.type = 'button'; c.className = 'celda';
+      c.setAttribute('aria-pressed','false');
+      c.setAttribute('aria-label','Parte ' + (k+1));
+      c.addEventListener('click', function(){
+        if(st.respondida) return;
+        pintadas[k] = !pintadas[k];
+        c.setAttribute('aria-pressed', String(pintadas[k]));
+        actualizar();
+      });
+      barra.appendChild(c);
+    })(i);
+  }
+  caja.appendChild(barra);
+  caja.appendChild(cuenta);
+  actualizar();
+
+  botonRevisar(caja, function(){
+    var n = pintadas.filter(Boolean).length;
+    var bien = (n === ej.pinta);
+    barra.classList.add(bien ? 'bien' : 'mal');
+    Array.prototype.forEach.call(barra.children, function(c){ c.disabled = true; });
+    resolver(bien, ej, ej.pinta + ' de ' + ej.partes + ' partes');
+  });
+}
+
+/* --- 2. recta numérica --- */
+function pintarRecta(zona, ej){
+  var caja = taller(zona, 'Toca la marca donde va el número. Si la recta es larga, arrástrala de lado.');
+  var cont = document.createElement('div');
+  cont.className = 'recta';
+  var linea = document.createElement('div');
+  linea.className = 'recta-linea';
+  cont.appendChild(linea);
+
+  var elegido = null, marcas = [];
+  var pasos = Math.round((ej.max - ej.min) / ej.paso);
+  var decimales = (String(ej.paso).split('.')[1] || '').length;
+  // Cada marca necesita su espacio o los numeros se enciman.
+  linea.style.minWidth = Math.max(240, pasos * 42) + 'px';
+
+  for(var i=0;i<=pasos;i++){
+    (function(k){
+      var valor = +(ej.min + k * ej.paso).toFixed(decimales);
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'recta-marca';
+      b.style.left = (k / pasos * 100) + '%';
+      b.setAttribute('aria-pressed','false');
+      b.innerHTML = '<i></i><span>' + valor + '</span>';
+      b.addEventListener('click', function(){
+        if(st.respondida) return;
+        elegido = valor;
+        marcas.forEach(function(m){ m.setAttribute('aria-pressed', String(m === b)); });
+      });
+      marcas.push(b);
+      linea.appendChild(b);
+    })(i);
+  }
+  caja.appendChild(cont);
+
+  botonRevisar(caja, function(){
+    var bien = (elegido !== null && Math.abs(elegido - ej.r) < 1e-9);
+    marcas.forEach(function(m){
+      m.disabled = true;
+      var v = parseFloat(m.querySelector('span').textContent);
+      if(Math.abs(v - ej.r) < 1e-9) m.classList.add('bien');
+      else if(elegido !== null && Math.abs(v - elegido) < 1e-9) m.classList.add('mal');
+    });
+    resolver(bien, ej, String(ej.r));
+  });
+}
+
+/* --- 3. ordenar --- */
+function pintarOrden(zona, ej){
+  var caja = taller(zona, 'Toca las tarjetas en el orden correcto. Si te equivocas, usa Deshacer.');
+  var huecos = document.createElement('div');
+  huecos.className = 'orden-huecos';
+  var banco = document.createElement('div');
+  banco.className = 'orden-banco';
+  var puestos = [];
+
+  function fichaBanco(txt){
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'ficha';
+    b.textContent = txt;
+    b.addEventListener('click', function(){
+      if(st.respondida) return;
+      b.remove();
+      puestos.push(txt);
+      repintarHuecos();
+    });
+    return b;
+  }
+  function repintarHuecos(){
+    huecos.innerHTML = '';
+    puestos.forEach(function(txt, i){
+      var f = document.createElement('span');
+      f.className = 'ficha';
+      f.innerHTML = '<span class="pos">' + (i+1) + '</span>' + esc(txt);
+      huecos.appendChild(f);
+    });
+    btnDeshacer.disabled = (puestos.length === 0) || st.respondida;
+  }
+
+  revuelve(ej.items).forEach(function(txt){ banco.appendChild(fichaBanco(txt)); });
+  caja.appendChild(huecos);
+  caja.appendChild(banco);
+
+  var acc = document.createElement('div');
+  acc.className = 'acciones';
+  var btnDeshacer = document.createElement('button');
+  btnDeshacer.type = 'button'; btnDeshacer.className = 'btn'; btnDeshacer.textContent = '↩ Deshacer';
+  btnDeshacer.addEventListener('click', function(){
+    if(st.respondida || !puestos.length) return;
+    banco.appendChild(fichaBanco(puestos.pop()));
+    repintarHuecos();
+  });
+  var btnRev = document.createElement('button');
+  btnRev.type = 'button'; btnRev.className = 'btn btn--rojo'; btnRev.textContent = 'Revisar';
+  btnRev.addEventListener('click', function(){
+    if(st.respondida) return;
+    if(puestos.length < ej.items.length){ return; }   // faltan tarjetas
+    btnRev.disabled = true; btnDeshacer.disabled = true;
+    var bien = puestos.every(function(txt, i){ return txt === ej.items[i]; });
+    Array.prototype.forEach.call(huecos.children, function(f, i){
+      f.classList.add(puestos[i] === ej.items[i] ? 'bien' : 'mal');
+    });
+    Array.prototype.forEach.call(banco.children, function(f){ f.disabled = true; });
+    resolver(bien, ej, ej.items.join(' → '));
+  });
+  acc.appendChild(btnDeshacer); acc.appendChild(btnRev);
+  caja.appendChild(acc);
+  repintarHuecos();
+}
+
+/* --- 4. unir dos columnas --- */
+function pintarParear(zona, ej){
+  var caja = taller(zona, 'Toca uno de la izquierda y luego su pareja de la derecha.');
+  var rejilla = document.createElement('div');
+  rejilla.className = 'parejas';
+  var colA = document.createElement('div'); colA.className = 'columna';
+  var colB = document.createElement('div'); colB.className = 'columna';
+  rejilla.appendChild(colA); rejilla.appendChild(colB);
+
+  var seleccionA = null, unidos = 0, fallos = 0;
+
+  function boton(txt, lado, idx){
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'par';
+    b.textContent = txt;
+    b.dataset.idx = String(idx);
+    b.setAttribute('aria-pressed','false');
+    b.addEventListener('click', function(){
+      if(st.respondida || b.classList.contains('unido')) return;
+      if(lado === 'a'){
+        if(seleccionA) seleccionA.setAttribute('aria-pressed','false');
+        seleccionA = (seleccionA === b) ? null : b;
+        b.setAttribute('aria-pressed', String(seleccionA === b));
+        return;
+      }
+      if(!seleccionA) return;
+      if(seleccionA.dataset.idx === b.dataset.idx){
+        seleccionA.classList.add('unido'); seleccionA.setAttribute('aria-pressed','false');
+        b.classList.add('unido');
+        seleccionA.disabled = true; b.disabled = true;
+        seleccionA = null;
+        unidos++;
+        if(unidos === ej.pares.length) terminarPareo();
+      } else {
+        fallos++;
+        var malA = seleccionA;
+        malA.classList.add('fallo'); b.classList.add('fallo');
+        setTimeout(function(){
+          malA.classList.remove('fallo'); b.classList.remove('fallo');
+          malA.setAttribute('aria-pressed','false');
+        }, 420);
+        seleccionA = null;
+      }
+    });
+    return b;
+  }
+
+  function terminarPareo(){
+    var bien = (fallos === 0);
+    resolver(bien, ej, ej.pares.map(function(p){ return p[0] + ' con ' + p[1]; }).join('; '),
+      bien ? null : 'Las uniste todas, pero con ' + fallos + (fallos === 1 ? ' intento fallido.' : ' intentos fallidos.'));
+  }
+
+  var izq = revuelve(ej.pares.map(function(p, i){ return {txt:p[0], i:i}; }));
+  var der = revuelve(ej.pares.map(function(p, i){ return {txt:p[1], i:i}; }));
+  izq.forEach(function(x){ colA.appendChild(boton(x.txt, 'a', x.i)); });
+  der.forEach(function(x){ colB.appendChild(boton(x.txt, 'b', x.i)); });
+  caja.appendChild(rejilla);
+}
+
+/* --- 5. contar tocando --- */
+function pintarConteo(zona, ej){
+  var caja = taller(zona, 'Toca las figuras mientras cuentas. Vuelve a tocar para quitar.');
+  var rejilla = document.createElement('div');
+  rejilla.className = 'conteo';
+  var tocadas = [], emoji = ej.emoji || '🔵';
+
+  var cuenta = document.createElement('p');
+  cuenta.className = 'cuenta-frac';
+  function actualizar(){
+    cuenta.innerHTML = '<small>llevas tocadas</small>' + tocadas.filter(Boolean).length;
+  }
+
+  for(var i=0;i<ej.total;i++){
+    (function(k){
+      tocadas[k] = false;
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'pieza';
+      b.setAttribute('aria-pressed','false');
+      b.setAttribute('aria-label','Figura ' + (k+1));
+      b.textContent = emoji;
+      b.addEventListener('click', function(){
+        if(st.respondida) return;
+        tocadas[k] = !tocadas[k];
+        b.setAttribute('aria-pressed', String(tocadas[k]));
+        actualizar();
+      });
+      rejilla.appendChild(b);
+    })(i);
+  }
+  caja.appendChild(rejilla);
+  caja.appendChild(cuenta);
+  actualizar();
+
+  botonRevisar(caja, function(){
+    var n = tocadas.filter(Boolean).length;
+    Array.prototype.forEach.call(rejilla.children, function(b){ b.disabled = true; });
+    resolver(n === ej.r, ej, String(ej.r));
+  });
+}
+
+/* ---------- veredicto ---------- */
+function resolver(bien, ej, esperada, notaExtra){
+  st.respondida = true;
+  if(bien){ st.aciertos++; lanzarConfeti(); }
+
+  var v = document.createElement('div');
+  v.className = 'veredicto ' + (bien ? 'ok' : 'no');
+  v.setAttribute('role','status');
+  var titulo = bien ? '¡Eso es! 🎉' : (notaExtra || 'Casi. La respuesta era: ' + esperada);
+  v.innerHTML = '<strong>' + esc(titulo) + '</strong>' + esc(ej.ex);
+  $('zonaPregunta').appendChild(v);
+
+  var lec = leccionActual();
+  var ultima = (st.idx === lec.ejercicios.length - 1);
+  var acc = document.createElement('div');
+  acc.className = 'acciones';
+  var sig = document.createElement('button');
+  sig.type = 'button'; sig.className = 'btn btn--oro';
+  sig.textContent = ultima ? 'Ver mi resultado →' : 'Siguiente →';
+  sig.addEventListener('click', function(){
+    if(ultima){ terminar(); } else { st.idx++; pintarPregunta(); }
+  });
+  acc.appendChild(sig);
+  $('zonaPregunta').appendChild(acc);
+  sig.focus();
+
+  if(st.nivel === 'semillas'){ hablar(titulo + ' ' + ej.ex); }
+}
+
+/* ---------- telón ---------- */
+function terminar(){
+  var lec = leccionActual();
+  var total = lec.ejercicios.length;
+  var a = st.aciertos;
+  var estrellas = a === total ? 3 : (a >= total - 1 ? 2 : (a >= Math.ceil(total/2) ? 1 : 0));
+
+  var k = claveLec(st.curso.id, st.nivel, st.lecIdx);
+  var previo = progreso[k] || {estrellas:0, aciertos:0};
+  progreso[k] = {
+    estrellas: Math.max(previo.estrellas || 0, estrellas),
+    aciertos: Math.max(previo.aciertos || 0, a),
+    total: total
+  };
+  C.guardarProgreso(perfil.id, progreso);
+  pintarCabecera();
+
+  $('rielBarra').style.width = '100%';
+  $('telonEstrellas').textContent = C.estrellasTxt(estrellas);
+  $('telonEstrellas').style.color = 'var(--oro)';
+
+  var titulo, texto, emo;
+  if(estrellas === 3){ emo='🏆'; titulo='¡Función perfecta!'; texto='Contestaste las ' + total + ' bien. Ese número ya lo dominas: pasa a la siguiente lección.'; }
+  else if(estrellas === 2){ emo='🎉'; titulo='¡Muy buen número!'; texto='Acertaste ' + a + ' de ' + total + '. Lee otra vez la parte que falló y las tres estrellas son tuyas.'; }
+  else if(estrellas === 1){ emo='💪'; titulo='Vas avanzando'; texto='Acertaste ' + a + ' de ' + total + '. Nadie camina la cuerda a la primera: repasa la lección y vuelve a intentar.'; }
+  else { emo='🎪'; titulo='A ensayar otra vez'; texto='Acertaste ' + a + ' de ' + total + '. Vuelve a la lección, léela despacio y regresa. Aquí no se pierde: se ensaya.'; }
+
+  $('telonEmoji').textContent = emo;
+  $('telonTitulo').textContent = titulo;
+  $('telonTexto').textContent = texto;
+  mostrar('telon', true);
+  corregirHash('telon');
+  if(estrellas >= 2) lanzarConfeti();
+  if(st.nivel === 'semillas') hablar(titulo + '. ' + texto);
+}
+
+/* ---------- arranque ---------- */
+document.querySelectorAll('[data-ir]').forEach(function(b){
+  b.addEventListener('click', function(){
+    var d = b.getAttribute('data-ir');
+    if(d === 'curso' && st.curso){ abrirCurso(st.curso); }
+    else if(d === 'leccion' && st.curso){ abrirLeccion(st.lecIdx); }
+    else { pintarCursos(); mostrar('programa'); }
+  });
+});
+$('btnEmpezar').addEventListener('click', empezar);
+$('btnOtraVez').addEventListener('click', empezar);
+$('btnLeer').addEventListener('click', function(){ hablar(textoLeccion()); });
+$('btnLeerPregunta').addEventListener('click', function(){ hablar(textoPregunta()); });
+
+pintarCabecera();
+pintarCursos();
+mostrar('programa');
+
+}
+
+// En el sitio arranca solo. En el archivo suelto lo arranca el
+// conmutador de paginas, cuando ya se sabe quien esta jugando.
+if(window.CARPA_UNICO){ window.arrancarMotor = arrancarMotor; }
+else { arrancarMotor(); }
+
+
+</script>
+<script>
+/* Conmutador del archivo suelto: aquí no hay dos páginas que visitar,
+   así que se muestra una u otra según haya artista activo. */
+(function(){
+  var C = window.Carpa;
+  var ini = document.getElementById('paginaInicio');
+  var est = document.getElementById('paginaEstacion');
+  var hay = !!C.activo();
+  ini.hidden = hay;
+  est.hidden = !hay;
+  if(hay && window.arrancarMotor) window.arrancarMotor();
+
+  // Los enlaces que en el sitio van al inicio, aquí sueltan al artista.
+  document.querySelectorAll('a[href^="index.html"]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      e.preventDefault();
+      C.salir();
+      location.reload();
+    });
+  });
+})();
+</script>
+</body>
+</html>

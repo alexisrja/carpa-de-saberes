@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="La Estación: seis materias con lecciones y ejercicios para los niños del circo.">
+<meta name="theme-color" content="#C62828">
+<title>La Estación · Carpa de Saberes</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="iconos/icono-192.png">
+<link rel="apple-touch-icon" href="iconos/icono-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Nunito:ital,wght@0,400;0,700;0,900;1,400&family=Rye&display=swap">
+<link rel="stylesheet" href="css/carpa.css">
+</head>
+<body>
+
+<canvas id="confeti" aria-hidden="true"></canvas>
+
+<header class="marquesina">
+  <h1 class="marca"><a href="index.html">Carpa de Saberes</a></h1>
+  <p class="lema">La Estación · 6 números en cartelera</p>
+  <div class="barra-perfil">
+    <a class="chip chip--btn" id="chipArtista" href="index.html"><span id="caraArtista">🎪</span> <span id="txtNombre">Artista</span></a>
+    <span class="chip">🎟️ <b id="txtBoletos">0</b> boletos</span>
+    <span class="chip">⭐ <b id="txtEstrellas">0</b> estrellas</span>
+    <a class="chip chip--btn" href="index.html">🔄 Cambiar</a>
+  </div>
+</header>
+<div class="banderines" id="banderinesEstacion" aria-hidden="true"></div>
+
+<main class="envoltura">
+
+  <!-- ===== PROGRAMA ===== -->
+  <section class="vista" id="vistaPrograma" tabindex="-1">
+    <div class="seccion">
+      <p class="rotulo" id="rotuloNivel">Tu nivel</p>
+      <h2 class="titulo-seccion" id="tituloPrograma">El programa de la función</h2>
+      <div class="programa" id="rejillaCursos"></div>
+      <div class="pie">
+        <span>Tus estrellas se guardan solo en este aparato.</span>
+        <a href="index.html" class="volver" style="padding:0">Cambiar de artista</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CURSO ===== -->
+  <section class="vista" id="vistaCurso" tabindex="-1" hidden>
+    <button class="volver" data-ir="programa" type="button">← Volver al programa</button>
+    <div class="encabezado-curso">
+      <span class="icono" id="cursoIcono">🎪</span>
+      <div>
+        <p class="rotulo" id="cursoNivel">Nivel</p>
+        <h2 class="titulo-seccion" id="cursoTitulo" style="margin-bottom:0">Curso</h2>
+      </div>
+    </div>
+    <p id="cursoDesc" style="color:var(--tinta2);max-width:58ch;margin:6px 0 0"></p>
+    <div class="lista-lecciones" id="listaLecciones"></div>
+  </section>
+
+  <!-- ===== LECCIÓN ===== -->
+  <section class="vista" id="vistaLeccion" tabindex="-1" hidden>
+    <button class="volver" data-ir="curso" type="button">← Volver a las lecciones</button>
+    <div class="pizarra">
+      <p class="rotulo" id="lecRotulo">Lección</p>
+      <h2 id="lecTitulo">Título</h2>
+      <button class="altavoz" type="button" id="btnLeer">🔊 Escuchar</button>
+      <div id="lecCuerpo"></div>
+      <div class="acciones">
+        <button class="btn btn--rojo" id="btnEmpezar" type="button">A la pista →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== EJERCICIOS ===== -->
+  <section class="vista" id="vistaPista" tabindex="-1" hidden>
+    <button class="volver" data-ir="leccion" type="button">← Repasar la lección</button>
+    <div class="pista">
+      <div class="contador">
+        <span id="pistaPaso">Pregunta 1 de 5</span>
+        <button class="altavoz" type="button" id="btnLeerPregunta">🔊 Leer</button>
+      </div>
+      <div class="riel"><i id="rielBarra" style="width:0%"></i></div>
+      <div id="zonaPregunta"></div>
+    </div>
+  </section>
+
+  <!-- ===== TELÓN ===== -->
+  <section class="vista" id="vistaTelon" tabindex="-1" hidden>
+    <div class="pista telon">
+      <p class="grande" id="telonEmoji">🎉</p>
+      <div class="estrellas" id="telonEstrellas" style="font-size:34px"></div>
+      <h2 id="telonTitulo">¡Buen número!</h2>
+      <p id="telonTexto"></p>
+      <div class="acciones" style="justify-content:center">
+        <button class="btn btn--oro" id="btnOtraVez" type="button">Intentar de nuevo</button>
+        <button class="btn" data-ir="curso" type="button">Otra lección</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script src="js/perfil.js"></script>
+<script src="js/datos-a.js"></script>
+<script src="js/datos-b.js"></script>
+<script src="js/datos-interactivos.js"></script>
+<script src="js/motor.js"></script>
+<!--solo-web-->
+<script>
+if('serviceWorker' in navigator){
+  addEventListener('load', function(){
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  });
+}
+</script>
+<!--/solo-web-->
+</body>
+</html>

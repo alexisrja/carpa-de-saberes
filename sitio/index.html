@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Escuela de pista para los niños del circo: seis materias con lecciones y ejercicios que se califican solos.">
+<meta name="theme-color" content="#C62828">
+<title>Carpa de Saberes</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="iconos/icono-192.png">
+<link rel="apple-touch-icon" href="iconos/icono-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Nunito:ital,wght@0,400;0,700;0,900;1,400&family=Rye&display=swap">
+<link rel="stylesheet" href="css/carpa.css">
+</head>
+<body>
+
+<div class="aviso-linea" id="avisoLinea" hidden>
+  <span id="textoAviso"></span>
+  <button class="btn" id="btnInstalar" type="button" hidden>Guardar en este aparato</button>
+</div>
+
+<header class="marquesina">
+  <h1 class="marca">Carpa de Saberes</h1>
+  <p class="lema">Escuela de pista · 6 números en cartelera</p>
+</header>
+<div class="banderines" id="banderines" aria-hidden="true"></div>
+
+<main class="envoltura">
+
+  <!-- ===== quién eres ===== -->
+  <section class="seccion" id="vistaArtistas">
+    <p class="rotulo">Antes de entrar</p>
+    <h2 class="titulo-seccion">¿Quién eres hoy?</h2>
+    <p style="color:var(--tinta2);max-width:56ch;margin:0 0 20px">
+      Toca tu cara para seguir donde te quedaste. Si es tu primera vez, crea tu artista.
+    </p>
+    <div class="artistas" id="rejillaArtistas"></div>
+
+    <div class="pie">
+      <span>Tus estrellas se guardan en este aparato, no en internet.</span>
+      <span id="estadoOffline"></span>
+    </div>
+  </section>
+
+  <!-- ===== alta / edición ===== -->
+  <section class="seccion" id="vistaAlta" hidden>
+    <button class="volver" id="btnCancelar" type="button">← Volver</button>
+    <p class="rotulo" id="rotuloAlta">Nuevo artista</p>
+    <h2 class="titulo-seccion" id="tituloAlta">Crea tu artista</h2>
+
+    <div class="formulario">
+      <div class="campo">
+        <label class="rotulo" for="campoNombre">Tu nombre</label>
+        <input id="campoNombre" type="text" maxlength="18" autocomplete="off" placeholder="Ej. Lucía">
+        <p id="errorNombre" style="color:var(--rojo);font-size:14px;font-weight:700;margin:8px 0 0" hidden></p>
+      </div>
+
+      <div class="campo">
+        <span class="rotulo">Escoge tu cara</span>
+        <div class="caras" id="listaCaras" role="group" aria-label="Escoge tu cara"></div>
+      </div>
+
+      <div class="campo">
+        <span class="rotulo">¿En qué parte de la pista estás?</span>
+        <div class="niveles-op" id="listaNiveles" role="group" aria-label="Nivel"></div>
+      </div>
+
+      <div class="acciones">
+        <button class="btn btn--rojo" id="btnGuardar" type="button">Entrar a la Estación →</button>
+        <button class="btn" id="btnBorrar" type="button" hidden>Borrar este artista</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script src="js/perfil.js"></script>
+<script src="js/inicio.js"></script>
+<!--solo-web-->
+<script>
+if('serviceWorker' in navigator){
+  addEventListener('load', function(){
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  });
+}
+</script>
+<!--/solo-web-->
+</body>
+</html>

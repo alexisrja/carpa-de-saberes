@@ -3,7 +3,7 @@
    funcione sin internet. Los datos de los niños NUNCA pasan por aquí:
    viven en localStorage y no salen del aparato. */
 
-const VERSION = 'carpa-8e5e2d414d';
+const VERSION = 'carpa-90d3d3ffed';
 const ESENCIALES = [
   './',
   'index.html',
@@ -56,7 +56,10 @@ self.addEventListener('fetch', (e) => {
       if (guardada) return guardada;
       try {
         const res = await fetch(req);
-        if (res && res.ok) cache.put(req, res.clone());
+        // Una respuesta opaca trae status 0, asi que res.ok es false aunque
+        // haya llegado bien. Sin esto, la hoja de Google Fonts no se
+        // guardaba nunca y offline el sitio se quedaba sin tipografias.
+        if (res && (res.ok || res.type === 'opaque')) cache.put(req, res.clone());
         return res;
       } catch (err) {
         return guardada || Response.error();

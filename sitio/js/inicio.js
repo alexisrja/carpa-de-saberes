@@ -190,6 +190,8 @@ addEventListener('appinstalled', function(){
 });
 addEventListener('online',  pintarEstadoLinea);
 addEventListener('offline', pintarEstadoLinea);
+// Al volver desde la cache el navegador no dispara online/offline.
+addEventListener('pageshow', pintarEstadoLinea);
 
 $('btnInstalar').addEventListener('click', function(){
   if(!eventoInstalar) return;

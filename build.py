@@ -50,14 +50,26 @@ for nombre in DATOS:
 import hashlib
 
 def huella():
+    """Huella de todo lo que se publica, sw.js incluido.
+
+    sw.js entra con su linea de VERSION neutralizada. Si no, el calculo
+    seria recursivo: la version se escribe dentro del propio sw.js. Y si
+    se saltara el archivo entero, un arreglo que viviera SOLO en sw.js no
+    cambiaria la version, el service worker nuevo heredaria el cache que
+    lleno el viejo, y las entradas guardadas con las reglas viejas se
+    quedarian ahi (activate solo borra las cachés con otro nombre).
+    """
     h = hashlib.sha1()
     for raiz, _, archivos in sorted(os.walk(SITIO)):
         for nombre in sorted(archivos):
+            ruta = os.path.join(raiz, nombre)
+            with open(ruta, "rb") as f:
+                datos = f.read()
             if nombre == "sw.js":
-                continue
-            with open(os.path.join(raiz, nombre), "rb") as f:
-                h.update(nombre.encode("utf-8"))
-                h.update(f.read())
+                datos = re.sub(rb"const VERSION = '[^']*';",
+                               b"const VERSION = '<huella>';", datos, count=1)
+            h.update(nombre.encode("utf-8"))
+            h.update(datos)
     return h.hexdigest()[:10]
 
 sw_ruta = os.path.join(SITIO, "sw.js")
@@ -100,9 +112,15 @@ CONMUTADOR = u"""
   if(hay && window.arrancarMotor) window.arrancarMotor();
 
   // Los enlaces que en el sitio van al inicio, aquí sueltan al artista.
+  // Salvo el del chip, que lleva ?editar=<id>: ese abre la edición, y si
+  // se tratara como los demás no habría forma de cambiar cara ni nivel.
   document.querySelectorAll('a[href^="index.html"]').forEach(function(a){
     a.addEventListener('click', function(e){
       e.preventDefault();
+      var m = /[?&]editar=([^&]+)/.exec(a.getAttribute('href') || '');
+      if(m){
+        try{ localStorage.setItem('carpa:editar', JSON.stringify(decodeURIComponent(m[1]))); }catch(err){}
+      }
       C.salir();
       location.reload();
     });

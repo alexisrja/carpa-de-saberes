@@ -44,7 +44,7 @@ window.DATOS_INT = {
 
   // ---------- CIENCIAS NATURALES ----------
   'cien|semillas':[
-    {t:'parear', p:'Une cada animal con su casa', pares:[['🐦 El pájaro','El nido'],['🐝 La abeja','El panal'],['🐭 El ratón','La cueva']], ex:'Cada animal hace o busca un lugar distinto para dormir y cuidar a sus crías.'},
+    {t:'parear', p:'Une cada animal con su casa', pares:[['🐦 El pájaro','El nido'],['🐝 La abeja','El panal'],['🐭 El ratón','La madriguera']], ex:'Cada animal hace o busca un lugar distinto para dormir y cuidar a sus crías.'},
     {t:'orden', p:'Ordena cómo crece una planta', items:['🌰 La semilla','🌱 El brote','🌿 La planta','🌻 La flor'], ex:'Todo empieza en la semilla. La flor sale hasta el final, cuando la planta ya creció.'}
   ],
   'cien|malabaristas':[

@@ -101,25 +101,61 @@ function resumen(id){
 }
 
 /* ---------- migración desde la versión de un solo archivo ----------
-   Antes había un solo nombre suelto ('carpa:perfil') y el progreso
-   colgaba del nombre, no de un id. Se convierte a un perfil de verdad
-   para que nadie pierda sus estrellas al actualizar. */
+   El esquema viejo colgaba el progreso del NOMBRE, no de un id, y quien
+   jugaba sin escribir nombre iba a parar a "_invitado". Mirar solo
+   'carpa:perfil' dejaba fuera a los dos casos mas comunes: el invitado,
+   que nunca escribia esa clave, y los hermanos, porque 'carpa:perfil'
+   solo guardaba al ultimo activo. Ahora se barren todas las claves de
+   progreso y cada una se convierte en su propio artista. */
 function migrar(){
-  var viejoNombre;
-  try{ viejoNombre = JSON.parse(localStorage.getItem('carpa:perfil') || 'null'); }
-  catch(e){ viejoNombre = null; }
-  if(!viejoNombre) return false;
+  var existentes = perfiles().map(function(p){ return p.id; });
 
-  var yaEsta = perfiles().some(function(p){ return p.nombre === viejoNombre; });
-  if(!yaEsta){
-    var nivelViejo;
-    try{ nivelViejo = JSON.parse(localStorage.getItem('carpa:nivel') || 'null'); }catch(e){}
-    var p = crear({nombre: viejoNombre, cara: CARAS[0], nivel: nivelViejo || 'malabaristas'});
-    var progViejo = leer('carpa:prog:' + viejoNombre, null);
-    if(progViejo && Object.keys(progViejo).length) guardarProgreso(p.id, progViejo);
-  }
-  try{ localStorage.removeItem('carpa:perfil'); }catch(e){}
-  return true;
+  var nivelViejo = null;
+  try{ nivelViejo = JSON.parse(localStorage.getItem('carpa:nivel') || 'null'); }catch(e){}
+  if(!nivelValido(nivelViejo)) nivelViejo = 'malabaristas';
+
+  var claves = [];
+  try{
+    for(var i=0;i<localStorage.length;i++){
+      var k = localStorage.key(i);
+      if(k && k.indexOf(K_PROG) === 0) claves.push(k);
+    }
+  }catch(e){ return false; }
+
+  var migrados = 0;
+  claves.forEach(function(k){
+    var sufijo = k.slice(K_PROG.length);
+    if(existentes.indexOf(sufijo) !== -1) return;      // ya cuelga de un perfil
+
+    var prog = leer(k, null);
+    if(!prog || !Object.keys(prog).length){
+      try{ localStorage.removeItem(k); }catch(e){}     // rastro vacío
+      return;
+    }
+    var nombre = (sufijo === '_invitado') ? 'Artista' : sufijo;
+    var p = crear({
+      nombre: nombre,
+      cara: CARAS[migrados % CARAS.length],
+      nivel: nivelViejo
+    });
+    guardarProgreso(p.id, prog);
+    try{ localStorage.removeItem(k); }catch(e){}
+    migrados++;
+  });
+
+  try{
+    localStorage.removeItem('carpa:perfil');
+    localStorage.removeItem('carpa:nivel');
+  }catch(e){}
+  return migrados > 0;
+}
+
+/* Dos artistas con el mismo nombre quedan indistinguibles en el inicio. */
+function nombreLibre(nombre, exceptoId){
+  var n = String(nombre).trim().toLowerCase();
+  return !perfiles().some(function(p){
+    return p.id !== exceptoId && p.nombre.trim().toLowerCase() === n;
+  });
 }
 
 /* ---------- utilidades compartidas ---------- */
@@ -143,7 +179,7 @@ window.Carpa = {
   porId: porId, activar: activar, activo: activo, salir: salir,
   nivelPorId: nivelPorId, nivelValido: nivelValido,
   progreso: progreso, guardarProgreso: guardarProgreso, resumen: resumen,
-  migrar: migrar, esc: esc, estrellasTxt: estrellasTxt, banderines: banderines
+  migrar: migrar, nombreLibre: nombreLibre, esc: esc, estrellasTxt: estrellasTxt, banderines: banderines
 };
 
 })();

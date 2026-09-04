@@ -326,19 +326,31 @@ function taller(zona, ayuda){
   zona.appendChild(caja);
   return caja;
 }
-function botonRevisar(caja, alRevisar){
+function botonRevisar(caja, alRevisar, hayAlgo){
   var acc = document.createElement('div');
   acc.className = 'acciones';
   var b = document.createElement('button');
   b.type = 'button'; b.className = 'btn btn--rojo'; b.textContent = 'Revisar';
+  var aviso = document.createElement('p');
+  aviso.className = 'ayuda-taller';
+  aviso.style.color = 'var(--rojo)';
+  aviso.hidden = true;
   b.addEventListener('click', function(){
     if(st.respondida) return;
+    // Un toque perdido en Revisar no debe costarle el ejercicio: sin
+    // ninguna interaccion previa no se califica, se avisa.
+    if(hayAlgo && !hayAlgo()){
+      aviso.hidden = false;
+      return;
+    }
+    aviso.hidden = true;
     b.disabled = true;
     alRevisar();
   });
   acc.appendChild(b);
   caja.appendChild(acc);
-  return b;
+  caja.appendChild(aviso);
+  return {boton:b, aviso:aviso};
 }
 
 /* --- opción múltiple y verdadero/falso --- */
@@ -444,13 +456,14 @@ function pintarFraccion(zona, ej){
   caja.appendChild(cuenta);
   actualizar();
 
-  botonRevisar(caja, function(){
+  var rev = botonRevisar(caja, function(){
     var n = pintadas.filter(Boolean).length;
     var bien = (n === ej.pinta);
     barra.classList.add(bien ? 'bien' : 'mal');
     Array.prototype.forEach.call(barra.children, function(c){ c.disabled = true; });
     resolver(bien, ej, ej.pinta + ' de ' + ej.partes + ' partes');
-  });
+  }, function(){ return pintadas.some(Boolean); });
+  rev.aviso.textContent = 'Primero pinta las partes que te piden.';
 }
 
 /* --- 2. recta numérica --- */
@@ -466,7 +479,7 @@ function pintarRecta(zona, ej){
   var pasos = Math.round((ej.max - ej.min) / ej.paso);
   var decimales = (String(ej.paso).split('.')[1] || '').length;
   // Cada marca necesita su espacio o los numeros se enciman.
-  linea.style.minWidth = Math.max(240, pasos * 42) + 'px';
+  linea.style.minWidth = Math.max(240, pasos * 46) + 'px';
 
   for(var i=0;i<=pasos;i++){
     (function(k){
@@ -487,7 +500,7 @@ function pintarRecta(zona, ej){
   }
   caja.appendChild(cont);
 
-  botonRevisar(caja, function(){
+  var rev = botonRevisar(caja, function(){
     var bien = (elegido !== null && Math.abs(elegido - ej.r) < 1e-9);
     marcas.forEach(function(m){
       m.disabled = true;
@@ -496,6 +509,12 @@ function pintarRecta(zona, ej){
       else if(elegido !== null && Math.abs(v - elegido) < 1e-9) m.classList.add('mal');
     });
     resolver(bien, ej, String(ej.r));
+  }, function(){ return elegido !== null; });
+  rev.aviso.textContent = 'Primero toca una marca de la recta.';
+
+  // Aviso de que la recta sigue mas alla del borde.
+  requestAnimationFrame(function(){
+    if(cont.scrollWidth > cont.clientWidth + 4) cont.classList.add('desliza');
   });
 }
 
@@ -602,7 +621,7 @@ function pintarParear(zona, ej){
         setTimeout(function(){
           malA.classList.remove('fallo'); b.classList.remove('fallo');
           malA.setAttribute('aria-pressed','false');
-        }, 420);
+        }, 700);
         seleccionA = null;
       }
     });
@@ -610,9 +629,17 @@ function pintarParear(zona, ej){
   }
 
   function terminarPareo(){
-    var bien = (fallos === 0);
-    resolver(bien, ej, ej.pares.map(function(p){ return p[0] + ' con ' + p[1]; }).join('; '),
-      bien ? null : 'Las uniste todas, pero con ' + fallos + (fallos === 1 ? ' intento fallido.' : ' intentos fallidos.'));
+    // Con 3 o 4 parejas, exigir cero equivocaciones convierte la estrella
+    // en puntería en vez de saber, y la mitad de estos ejercicios son de
+    // ninos de 4 a 6. Se tolera una equivocacion por cada dos parejas.
+    var tolerancia = Math.floor(ej.pares.length / 2);
+    var bien = (fallos <= tolerancia);
+    var nota;
+    if(fallos === 0) nota = null;
+    else if(bien) nota = '¡Las uniste todas! Te tomó ' + fallos +
+      (fallos === 1 ? ' intento de más.' : ' intentos de más.');
+    else nota = 'Las uniste todas, pero te tomó ' + fallos + ' intentos de más.';
+    resolver(bien, ej, ej.pares.map(function(p){ return p[0] + ' con ' + p[1]; }).join('; '), nota);
   }
 
   var izq = revuelve(ej.pares.map(function(p, i){ return {txt:p[0], i:i}; }));
@@ -656,11 +683,12 @@ function pintarConteo(zona, ej){
   caja.appendChild(cuenta);
   actualizar();
 
-  botonRevisar(caja, function(){
+  var rev = botonRevisar(caja, function(){
     var n = tocadas.filter(Boolean).length;
     Array.prototype.forEach.call(rejilla.children, function(b){ b.disabled = true; });
     resolver(n === ej.r, ej, String(ej.r));
-  });
+  }, function(){ return tocadas.some(Boolean); });
+  rev.aviso.textContent = 'Primero toca las figuras para contarlas.';
 }
 
 /* ---------- veredicto ---------- */

@@ -82,6 +82,15 @@
 <!--solo-web-->
 <script>
 if('serviceWorker' in navigator){
+  // Sin esto la version nueva aparece hasta la SEGUNDA apertura: la
+  // pagina ya se sirvio del cache viejo mientras la nueva se instalaba.
+  var yaTeniaControl = !!navigator.serviceWorker.controller;
+  var recargando = false;
+  navigator.serviceWorker.addEventListener('controllerchange', function(){
+    if(!yaTeniaControl || recargando) return;   // en la primera visita no hay nada que refrescar
+    recargando = true;
+    location.reload();
+  });
   addEventListener('load', function(){
     navigator.serviceWorker.register('sw.js').catch(function(){});
   });

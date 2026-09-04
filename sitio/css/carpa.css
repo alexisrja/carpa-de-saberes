@@ -288,10 +288,16 @@ h1,h2,h3{margin:0;text-wrap:balance;font-family:"Alfa Slab One","Rockwell",Georg
 /* recta numérica */
 /* padding abajo: la etiqueta del número cuelga bajo la línea y se cortaba */
 .recta{position:relative;padding:30px 12px 40px;overflow-x:auto}
+/* cuando la recta no cabe, un degradado avisa de que sigue */
+.recta.desliza{
+  -webkit-mask-image:linear-gradient(90deg,#000 0,#000 88%,transparent 100%);
+  mask-image:linear-gradient(90deg,#000 0,#000 88%,transparent 100%);
+}
 .recta-linea{position:relative;height:4px;background:var(--tinta);border-radius:2px;min-width:260px}
 .recta-marca{
   position:absolute;top:-16px;transform:translateX(-50%);
-  width:38px;padding:0;background:transparent;border:none;
+  /* 44x44 es el minimo para un dedo; antes median 38x40 */
+  width:44px;min-height:44px;padding:0;background:transparent;border:none;
   display:flex;flex-direction:column;align-items:center;gap:3px;
 }
 .recta-marca i{display:block;width:3px;height:18px;background:var(--tinta);border-radius:2px}

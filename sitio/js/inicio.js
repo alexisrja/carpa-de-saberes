@@ -43,12 +43,15 @@ function pintarArtistas(){
   nuevo.addEventListener('click', function(){ abrirAlta(null); });
   cont.appendChild(nuevo);
 
-  if(lista.length){
-    var ayuda = document.createElement('p');
+  var ayuda = $('ayudaArtistas');
+  if(!ayuda){
+    ayuda = document.createElement('p');
+    ayuda.id = 'ayudaArtistas';   // si no, se inserta uno nuevo en cada repintado
     ayuda.style.cssText = 'color:var(--tinta2);font-size:14px;margin:18px 0 0';
     ayuda.textContent = 'Para cambiar tu cara o tu nivel, entra y usa el botón de tu nombre.';
     cont.parentNode.insertBefore(ayuda, cont.nextSibling);
   }
+  ayuda.hidden = !lista.length;
 }
 
 function entrar(id){
@@ -132,6 +135,13 @@ function guardar(){
     campo.focus();
     return;
   }
+  if(!C.nombreLibre(nombre, editando)){
+    campo.style.borderColor = 'var(--rojo)';
+    $('errorNombre').textContent = 'Ya hay un artista que se llama ' + nombre + '. Escoge otro nombre.';
+    $('errorNombre').hidden = false;
+    campo.focus();
+    return;
+  }
   campo.style.borderColor = '';
   $('errorNombre').hidden = true;
 
@@ -150,7 +160,8 @@ function borrar(){
   if(!p) return;
   var r = C.resumen(editando);
   var aviso = r.estrellas
-    ? 'Se van a borrar ' + p.nombre + ' y sus ' + r.estrellas + ' estrellas. Esto no se puede deshacer.'
+    ? 'Se van a borrar ' + p.nombre + ' y su' + (r.estrellas === 1 ? ' estrella' : 's ' + r.estrellas + ' estrellas') +
+      '. Esto no se puede deshacer.'
     : 'Se va a borrar ' + p.nombre + '. Esto no se puede deshacer.';
   if(!confirm(aviso)) return;
   C.borrar(editando);
@@ -190,7 +201,8 @@ addEventListener('appinstalled', function(){
 });
 addEventListener('online',  pintarEstadoLinea);
 addEventListener('offline', pintarEstadoLinea);
-// Al volver desde la cache el navegador no dispara online/offline.
+// Al volver desde bfcache el script no se re-ejecuta, asi que la
+// llamada del arranque no corre y el indicador se quedaria viejo.
 addEventListener('pageshow', pintarEstadoLinea);
 
 $('btnInstalar').addEventListener('click', function(){
@@ -214,8 +226,17 @@ $('campoNombre').addEventListener('keydown', function(e){
 pintarArtistas();
 pintarEstadoLinea();
 
-// Si llega con ?editar=<id> desde la estación, abre la edición directo.
+// Desde la estación: por la URL en el sitio, por bandera en el archivo
+// suelto, donde no hay a dónde navegar.
+var pedido = null;
 var m = /[?&]editar=([^&]+)/.exec(location.search);
-if(m && C.porId(decodeURIComponent(m[1]))) abrirAlta(decodeURIComponent(m[1]));
+if(m) pedido = decodeURIComponent(m[1]);
+if(!pedido){
+  try{
+    pedido = JSON.parse(localStorage.getItem('carpa:editar') || 'null');
+    localStorage.removeItem('carpa:editar');
+  }catch(e){}
+}
+if(pedido && C.porId(pedido)) abrirAlta(pedido);
 
 })();

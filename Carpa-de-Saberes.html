@@ -300,10 +300,16 @@ h1,h2,h3{margin:0;text-wrap:balance;font-family:"Alfa Slab One","Rockwell",Georg
 /* recta numérica */
 /* padding abajo: la etiqueta del número cuelga bajo la línea y se cortaba */
 .recta{position:relative;padding:30px 12px 40px;overflow-x:auto}
+/* cuando la recta no cabe, un degradado avisa de que sigue */
+.recta.desliza{
+  -webkit-mask-image:linear-gradient(90deg,#000 0,#000 88%,transparent 100%);
+  mask-image:linear-gradient(90deg,#000 0,#000 88%,transparent 100%);
+}
 .recta-linea{position:relative;height:4px;background:var(--tinta);border-radius:2px;min-width:260px}
 .recta-marca{
   position:absolute;top:-16px;transform:translateX(-50%);
-  width:38px;padding:0;background:transparent;border:none;
+  /* 44x44 es el minimo para un dedo; antes median 38x40 */
+  width:44px;min-height:44px;padding:0;background:transparent;border:none;
   display:flex;flex-direction:column;align-items:center;gap:3px;
 }
 .recta-marca i{display:block;width:3px;height:18px;background:var(--tinta);border-radius:2px}
@@ -646,25 +652,61 @@ function resumen(id){
 }
 
 /* ---------- migración desde la versión de un solo archivo ----------
-   Antes había un solo nombre suelto ('carpa:perfil') y el progreso
-   colgaba del nombre, no de un id. Se convierte a un perfil de verdad
-   para que nadie pierda sus estrellas al actualizar. */
+   El esquema viejo colgaba el progreso del NOMBRE, no de un id, y quien
+   jugaba sin escribir nombre iba a parar a "_invitado". Mirar solo
+   'carpa:perfil' dejaba fuera a los dos casos mas comunes: el invitado,
+   que nunca escribia esa clave, y los hermanos, porque 'carpa:perfil'
+   solo guardaba al ultimo activo. Ahora se barren todas las claves de
+   progreso y cada una se convierte en su propio artista. */
 function migrar(){
-  var viejoNombre;
-  try{ viejoNombre = JSON.parse(localStorage.getItem('carpa:perfil') || 'null'); }
-  catch(e){ viejoNombre = null; }
-  if(!viejoNombre) return false;
+  var existentes = perfiles().map(function(p){ return p.id; });
 
-  var yaEsta = perfiles().some(function(p){ return p.nombre === viejoNombre; });
-  if(!yaEsta){
-    var nivelViejo;
-    try{ nivelViejo = JSON.parse(localStorage.getItem('carpa:nivel') || 'null'); }catch(e){}
-    var p = crear({nombre: viejoNombre, cara: CARAS[0], nivel: nivelViejo || 'malabaristas'});
-    var progViejo = leer('carpa:prog:' + viejoNombre, null);
-    if(progViejo && Object.keys(progViejo).length) guardarProgreso(p.id, progViejo);
-  }
-  try{ localStorage.removeItem('carpa:perfil'); }catch(e){}
-  return true;
+  var nivelViejo = null;
+  try{ nivelViejo = JSON.parse(localStorage.getItem('carpa:nivel') || 'null'); }catch(e){}
+  if(!nivelValido(nivelViejo)) nivelViejo = 'malabaristas';
+
+  var claves = [];
+  try{
+    for(var i=0;i<localStorage.length;i++){
+      var k = localStorage.key(i);
+      if(k && k.indexOf(K_PROG) === 0) claves.push(k);
+    }
+  }catch(e){ return false; }
+
+  var migrados = 0;
+  claves.forEach(function(k){
+    var sufijo = k.slice(K_PROG.length);
+    if(existentes.indexOf(sufijo) !== -1) return;      // ya cuelga de un perfil
+
+    var prog = leer(k, null);
+    if(!prog || !Object.keys(prog).length){
+      try{ localStorage.removeItem(k); }catch(e){}     // rastro vacío
+      return;
+    }
+    var nombre = (sufijo === '_invitado') ? 'Artista' : sufijo;
+    var p = crear({
+      nombre: nombre,
+      cara: CARAS[migrados % CARAS.length],
+      nivel: nivelViejo
+    });
+    guardarProgreso(p.id, prog);
+    try{ localStorage.removeItem(k); }catch(e){}
+    migrados++;
+  });
+
+  try{
+    localStorage.removeItem('carpa:perfil');
+    localStorage.removeItem('carpa:nivel');
+  }catch(e){}
+  return migrados > 0;
+}
+
+/* Dos artistas con el mismo nombre quedan indistinguibles en el inicio. */
+function nombreLibre(nombre, exceptoId){
+  var n = String(nombre).trim().toLowerCase();
+  return !perfiles().some(function(p){
+    return p.id !== exceptoId && p.nombre.trim().toLowerCase() === n;
+  });
 }
 
 /* ---------- utilidades compartidas ---------- */
@@ -688,7 +730,7 @@ window.Carpa = {
   porId: porId, activar: activar, activo: activo, salir: salir,
   nivelPorId: nivelPorId, nivelValido: nivelValido,
   progreso: progreso, guardarProgreso: guardarProgreso, resumen: resumen,
-  migrar: migrar, esc: esc, estrellasTxt: estrellasTxt, banderines: banderines
+  migrar: migrar, nombreLibre: nombreLibre, esc: esc, estrellasTxt: estrellasTxt, banderines: banderines
 };
 
 })();
@@ -1381,7 +1423,7 @@ window.DATOS_INT = {
 
   // ---------- CIENCIAS NATURALES ----------
   'cien|semillas':[
-    {t:'parear', p:'Une cada animal con su casa', pares:[['🐦 El pájaro','El nido'],['🐝 La abeja','El panal'],['🐭 El ratón','La cueva']], ex:'Cada animal hace o busca un lugar distinto para dormir y cuidar a sus crías.'},
+    {t:'parear', p:'Une cada animal con su casa', pares:[['🐦 El pájaro','El nido'],['🐝 La abeja','El panal'],['🐭 El ratón','La madriguera']], ex:'Cada animal hace o busca un lugar distinto para dormir y cuidar a sus crías.'},
     {t:'orden', p:'Ordena cómo crece una planta', items:['🌰 La semilla','🌱 El brote','🌿 La planta','🌻 La flor'], ex:'Todo empieza en la semilla. La flor sale hasta el final, cuando la planta ya creció.'}
   ],
   'cien|malabaristas':[
@@ -1470,12 +1512,15 @@ function pintarArtistas(){
   nuevo.addEventListener('click', function(){ abrirAlta(null); });
   cont.appendChild(nuevo);
 
-  if(lista.length){
-    var ayuda = document.createElement('p');
+  var ayuda = $('ayudaArtistas');
+  if(!ayuda){
+    ayuda = document.createElement('p');
+    ayuda.id = 'ayudaArtistas';   // si no, se inserta uno nuevo en cada repintado
     ayuda.style.cssText = 'color:var(--tinta2);font-size:14px;margin:18px 0 0';
     ayuda.textContent = 'Para cambiar tu cara o tu nivel, entra y usa el botón de tu nombre.';
     cont.parentNode.insertBefore(ayuda, cont.nextSibling);
   }
+  ayuda.hidden = !lista.length;
 }
 
 function entrar(id){
@@ -1559,6 +1604,13 @@ function guardar(){
     campo.focus();
     return;
   }
+  if(!C.nombreLibre(nombre, editando)){
+    campo.style.borderColor = 'var(--rojo)';
+    $('errorNombre').textContent = 'Ya hay un artista que se llama ' + nombre + '. Escoge otro nombre.';
+    $('errorNombre').hidden = false;
+    campo.focus();
+    return;
+  }
   campo.style.borderColor = '';
   $('errorNombre').hidden = true;
 
@@ -1577,7 +1629,8 @@ function borrar(){
   if(!p) return;
   var r = C.resumen(editando);
   var aviso = r.estrellas
-    ? 'Se van a borrar ' + p.nombre + ' y sus ' + r.estrellas + ' estrellas. Esto no se puede deshacer.'
+    ? 'Se van a borrar ' + p.nombre + ' y su' + (r.estrellas === 1 ? ' estrella' : 's ' + r.estrellas + ' estrellas') +
+      '. Esto no se puede deshacer.'
     : 'Se va a borrar ' + p.nombre + '. Esto no se puede deshacer.';
   if(!confirm(aviso)) return;
   C.borrar(editando);
@@ -1617,7 +1670,8 @@ addEventListener('appinstalled', function(){
 });
 addEventListener('online',  pintarEstadoLinea);
 addEventListener('offline', pintarEstadoLinea);
-// Al volver desde la cache el navegador no dispara online/offline.
+// Al volver desde bfcache el script no se re-ejecuta, asi que la
+// llamada del arranque no corre y el indicador se quedaria viejo.
 addEventListener('pageshow', pintarEstadoLinea);
 
 $('btnInstalar').addEventListener('click', function(){
@@ -1641,9 +1695,18 @@ $('campoNombre').addEventListener('keydown', function(e){
 pintarArtistas();
 pintarEstadoLinea();
 
-// Si llega con ?editar=<id> desde la estación, abre la edición directo.
+// Desde la estación: por la URL en el sitio, por bandera en el archivo
+// suelto, donde no hay a dónde navegar.
+var pedido = null;
 var m = /[?&]editar=([^&]+)/.exec(location.search);
-if(m && C.porId(decodeURIComponent(m[1]))) abrirAlta(decodeURIComponent(m[1]));
+if(m) pedido = decodeURIComponent(m[1]);
+if(!pedido){
+  try{
+    pedido = JSON.parse(localStorage.getItem('carpa:editar') || 'null');
+    localStorage.removeItem('carpa:editar');
+  }catch(e){}
+}
+if(pedido && C.porId(pedido)) abrirAlta(pedido);
 
 })();
 
@@ -1977,19 +2040,31 @@ function taller(zona, ayuda){
   zona.appendChild(caja);
   return caja;
 }
-function botonRevisar(caja, alRevisar){
+function botonRevisar(caja, alRevisar, hayAlgo){
   var acc = document.createElement('div');
   acc.className = 'acciones';
   var b = document.createElement('button');
   b.type = 'button'; b.className = 'btn btn--rojo'; b.textContent = 'Revisar';
+  var aviso = document.createElement('p');
+  aviso.className = 'ayuda-taller';
+  aviso.style.color = 'var(--rojo)';
+  aviso.hidden = true;
   b.addEventListener('click', function(){
     if(st.respondida) return;
+    // Un toque perdido en Revisar no debe costarle el ejercicio: sin
+    // ninguna interaccion previa no se califica, se avisa.
+    if(hayAlgo && !hayAlgo()){
+      aviso.hidden = false;
+      return;
+    }
+    aviso.hidden = true;
     b.disabled = true;
     alRevisar();
   });
   acc.appendChild(b);
   caja.appendChild(acc);
-  return b;
+  caja.appendChild(aviso);
+  return {boton:b, aviso:aviso};
 }
 
 /* --- opción múltiple y verdadero/falso --- */
@@ -2095,13 +2170,14 @@ function pintarFraccion(zona, ej){
   caja.appendChild(cuenta);
   actualizar();
 
-  botonRevisar(caja, function(){
+  var rev = botonRevisar(caja, function(){
     var n = pintadas.filter(Boolean).length;
     var bien = (n === ej.pinta);
     barra.classList.add(bien ? 'bien' : 'mal');
     Array.prototype.forEach.call(barra.children, function(c){ c.disabled = true; });
     resolver(bien, ej, ej.pinta + ' de ' + ej.partes + ' partes');
-  });
+  }, function(){ return pintadas.some(Boolean); });
+  rev.aviso.textContent = 'Primero pinta las partes que te piden.';
 }
 
 /* --- 2. recta numérica --- */
@@ -2117,7 +2193,7 @@ function pintarRecta(zona, ej){
   var pasos = Math.round((ej.max - ej.min) / ej.paso);
   var decimales = (String(ej.paso).split('.')[1] || '').length;
   // Cada marca necesita su espacio o los numeros se enciman.
-  linea.style.minWidth = Math.max(240, pasos * 42) + 'px';
+  linea.style.minWidth = Math.max(240, pasos * 46) + 'px';
 
   for(var i=0;i<=pasos;i++){
     (function(k){
@@ -2138,7 +2214,7 @@ function pintarRecta(zona, ej){
   }
   caja.appendChild(cont);
 
-  botonRevisar(caja, function(){
+  var rev = botonRevisar(caja, function(){
     var bien = (elegido !== null && Math.abs(elegido - ej.r) < 1e-9);
     marcas.forEach(function(m){
       m.disabled = true;
@@ -2147,6 +2223,12 @@ function pintarRecta(zona, ej){
       else if(elegido !== null && Math.abs(v - elegido) < 1e-9) m.classList.add('mal');
     });
     resolver(bien, ej, String(ej.r));
+  }, function(){ return elegido !== null; });
+  rev.aviso.textContent = 'Primero toca una marca de la recta.';
+
+  // Aviso de que la recta sigue mas alla del borde.
+  requestAnimationFrame(function(){
+    if(cont.scrollWidth > cont.clientWidth + 4) cont.classList.add('desliza');
   });
 }
 
@@ -2253,7 +2335,7 @@ function pintarParear(zona, ej){
         setTimeout(function(){
           malA.classList.remove('fallo'); b.classList.remove('fallo');
           malA.setAttribute('aria-pressed','false');
-        }, 420);
+        }, 700);
         seleccionA = null;
       }
     });
@@ -2261,9 +2343,17 @@ function pintarParear(zona, ej){
   }
 
   function terminarPareo(){
-    var bien = (fallos === 0);
-    resolver(bien, ej, ej.pares.map(function(p){ return p[0] + ' con ' + p[1]; }).join('; '),
-      bien ? null : 'Las uniste todas, pero con ' + fallos + (fallos === 1 ? ' intento fallido.' : ' intentos fallidos.'));
+    // Con 3 o 4 parejas, exigir cero equivocaciones convierte la estrella
+    // en puntería en vez de saber, y la mitad de estos ejercicios son de
+    // ninos de 4 a 6. Se tolera una equivocacion por cada dos parejas.
+    var tolerancia = Math.floor(ej.pares.length / 2);
+    var bien = (fallos <= tolerancia);
+    var nota;
+    if(fallos === 0) nota = null;
+    else if(bien) nota = '¡Las uniste todas! Te tomó ' + fallos +
+      (fallos === 1 ? ' intento de más.' : ' intentos de más.');
+    else nota = 'Las uniste todas, pero te tomó ' + fallos + ' intentos de más.';
+    resolver(bien, ej, ej.pares.map(function(p){ return p[0] + ' con ' + p[1]; }).join('; '), nota);
   }
 
   var izq = revuelve(ej.pares.map(function(p, i){ return {txt:p[0], i:i}; }));
@@ -2307,11 +2397,12 @@ function pintarConteo(zona, ej){
   caja.appendChild(cuenta);
   actualizar();
 
-  botonRevisar(caja, function(){
+  var rev = botonRevisar(caja, function(){
     var n = tocadas.filter(Boolean).length;
     Array.prototype.forEach.call(rejilla.children, function(b){ b.disabled = true; });
     resolver(n === ej.r, ej, String(ej.r));
-  });
+  }, function(){ return tocadas.some(Boolean); });
+  rev.aviso.textContent = 'Primero toca las figuras para contarlas.';
 }
 
 /* ---------- veredicto ---------- */
@@ -2419,9 +2510,15 @@ else { arrancarMotor(); }
   if(hay && window.arrancarMotor) window.arrancarMotor();
 
   // Los enlaces que en el sitio van al inicio, aquí sueltan al artista.
+  // Salvo el del chip, que lleva ?editar=<id>: ese abre la edición, y si
+  // se tratara como los demás no habría forma de cambiar cara ni nivel.
   document.querySelectorAll('a[href^="index.html"]').forEach(function(a){
     a.addEventListener('click', function(e){
       e.preventDefault();
+      var m = /[?&]editar=([^&]+)/.exec(a.getAttribute('href') || '');
+      if(m){
+        try{ localStorage.setItem('carpa:editar', JSON.stringify(decodeURIComponent(m[1]))); }catch(err){}
+      }
       C.salir();
       location.reload();
     });

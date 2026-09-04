@@ -3,7 +3,7 @@
    funcione sin internet. Los datos de los niños NUNCA pasan por aquí:
    viven en localStorage y no salen del aparato. */
 
-const VERSION = 'carpa-90d3d3ffed';
+const VERSION = 'carpa-9823dc131c';
 const ESENCIALES = [
   './',
   'index.html',
